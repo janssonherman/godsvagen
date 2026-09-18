@@ -1353,44 +1353,64 @@
         }
 
         function updateStats(filteredItems) {
-            const activeCost = filteredItems.filter(item => !item.completed).reduce((sum, item) => sum + ((item.cost !== undefined && item.cost !== '' && !isNaN(item.cost)) ? Number(item.cost) : 0), 0);
-            const completedCost = filteredItems.filter(item => item.completed).reduce((sum, item) => sum + ((item.cost !== undefined && item.cost !== '' && !isNaN(item.cost)) ? Number(item.cost) : 0), 0);
+            const activeCost = items.filter(item => !item.completed).reduce((sum, item) => sum + ((item.cost !== undefined && item.cost !== '' && !isNaN(item.cost)) ? Number(item.cost) : 0), 0);
+            const completedCost = items.filter(item => item.completed).reduce((sum, item) => sum + ((item.cost !== undefined && item.cost !== '' && !isNaN(item.cost)) ? Number(item.cost) : 0), 0);
+            const totalCount = items.length;
 
-            const totalCount = filteredItems.length;
+            const currentSelectedFilter = filterType ? filterType.value : 'ALL';
 
-            if (statActiveCost) statActiveCost.textContent = formatCurrency(activeCost);
-            if (statCompletedCost) statCompletedCost.textContent = formatCurrency(completedCost);
-            if (statTotalItems) statTotalItems.textContent = totalCount;
+            if (currentSelectedFilter !== 'ALL') {
+                const selectedCategoryItems = items.filter(item => item.type === currentSelectedFilter);
+                const selectedActiveCost = selectedCategoryItems.filter(item => !item.completed).reduce((sum, item) => sum + ((item.cost !== undefined && item.cost !== '' && !isNaN(item.cost)) ? Number(item.cost) : 0), 0);
+                const selectedCompletedCost = selectedCategoryItems.filter(item => item.completed).reduce((sum, item) => sum + ((item.cost !== undefined && item.cost !== '' && !isNaN(item.cost)) ? Number(item.cost) : 0), 0);
+
+                if (statActiveCost) statActiveCost.textContent = formatCurrency(selectedActiveCost);
+                if (statCompletedCost) statCompletedCost.textContent = formatCurrency(selectedCompletedCost);
+                if (statTotalItems) statTotalItems.textContent = selectedCategoryItems.length;
+            } else {
+                if (statActiveCost) statActiveCost.textContent = formatCurrency(activeCost);
+                if (statCompletedCost) statCompletedCost.textContent = formatCurrency(completedCost);
+                if (statTotalItems) statTotalItems.textContent = totalCount;
+            }
 
             const categoryStats = {};
             categories.forEach(cat => {
-                categoryStats[cat.name] = { cost: 0, count: 0, color: cat.color };
+                categoryStats[cat.name] = { activeCost: 0, count: 0, color: cat.color };
             });
 
-            filteredItems.forEach(item => {
+            // Calculate category stats from items not done only for each category summary
+            items.forEach(item => {
                 const catName = item.type || 'Allmänt';
                 if (!categoryStats[catName]) {
-                    categoryStats[catName] = { cost: 0, count: 0, color: 'stone' };
+                    categoryStats[catName] = { activeCost: 0, count: 0, color: 'stone' };
                 }
                 const costVal = (item.cost !== undefined && item.cost !== '' && !isNaN(item.cost)) ? Number(item.cost) : 0;
-                categoryStats[catName].cost += costVal;
+                if (!item.completed) {
+                    categoryStats[catName].activeCost += costVal;
+                }
                 categoryStats[catName].count += 1;
             });
 
             if (categorySummaryList) {
                 categorySummaryList.innerHTML = '';
                 const catEntries = Object.entries(categoryStats);
-                if (catEntries.length === 0) {
+                
+                // If a specific category is selected, show ONLY that category card
+                const visibleEntries = currentSelectedFilter !== 'ALL' 
+                    ? catEntries.filter(([catName]) => catName === currentSelectedFilter)
+                    : catEntries;
+
+                if (visibleEntries.length === 0) {
                     categorySummaryList.innerHTML = '<p class="text-xs text-stone-400 py-1 col-span-full">Inga kategorier tillgängliga.</p>';
                 } else {
-                    catEntries.forEach(([catName, data]) => {
+                    visibleEntries.forEach(([catName, data]) => {
                         const badgeClass = colorStyles[data.color] || colorStyles['stone'];
-                        const isSelected = filterType && filterType.value === catName;
+                        const isSelected = currentSelectedFilter === catName;
                         const div = document.createElement('div');
                         div.className = `p-3 rounded-xl bg-stone-50 border transition-all cursor-pointer hover:bg-stone-100 space-y-1.5 ${isSelected ? 'border-amber-800 ring-2 ring-amber-800/20 bg-amber-50/40' : 'border-stone-200'}`;
                         div.setAttribute('role', 'button');
                         div.setAttribute('tabindex', '0');
-                        div.title = `Klicka för att filtrera på ${catName}`;
+                        div.title = isSelected ? `Klicka för att visa alla kategorier` : `Klicka för att filtrera på ${catName}`;
                         
                         const handleCardClick = (e) => {
                             e.preventDefault();
@@ -1399,7 +1419,7 @@
                                 filterType.value = newFilter;
                                 
                                 if (itemTypeInput) {
-                                    itemTypeInput.value = newFilter === 'ALL' ? '' : newFilter;
+                                    itemTypeInput.value = newFilter === 'ALL' ? (categories.length > 0 ? categories[0].name : '') : newFilter;
                                 }
                                 
                                 render();
@@ -1420,8 +1440,8 @@
                                 <span class="text-stone-400 text-[11px] font-semibold">${data.count} st</span>
                             </div>
                             <div class="flex items-center justify-between pt-1 border-t border-stone-200/60 text-[11px] pointer-events-none">
-                                <span class="text-stone-500">Total kostnad:</span>
-                                <span class="font-bold text-stone-900">${formatCurrency(data.cost)}</span>
+                                <span class="text-stone-500">Ej klara kostnad:</span>
+                                <span class="font-bold text-stone-900">${formatCurrency(data.activeCost)}</span>
                             </div>
                         `;
                         categorySummaryList.appendChild(div);
