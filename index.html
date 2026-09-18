@@ -118,7 +118,7 @@
                     <label for="itemCost" class="block text-xs font-semibold text-stone-600 mb-1">Kostnad (kr) <span class="text-stone-400 font-normal">(Valfri)</span></label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-stone-400 text-xs font-semibold">kr</span>
-                        <input type="number" id="itemCost" step="1" min="0" placeholder="0" data-lpignore="true" autocomplete="off"
+                        <input type="number" id="itemCost" step="1" min="0" placeholder="" data-lpignore="true" autocomplete="off"
                             class="w-full pl-8 pr-2.5 py-2.5 text-sm bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-800/20 focus:border-amber-800 transition-all">
                     </div>
                 </div>
@@ -394,7 +394,7 @@
                     <label for="editItemCost" class="block text-xs font-semibold text-stone-600 mb-1">Kostnad (kr) <span class="text-stone-400 font-normal">(Valfri)</span></label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-stone-400 text-xs font-semibold">kr</span>
-                        <input type="number" id="editItemCost" step="1" min="0" data-lpignore="true" autocomplete="off"
+                        <input type="number" id="editItemCost" step="1" min="0" placeholder="" data-lpignore="true" autocomplete="off"
                             class="w-full pl-8 pr-2.5 py-2.5 text-sm bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-800/20 focus:border-amber-800 transition-all">
                     </div>
                 </div>
@@ -610,7 +610,7 @@
                             ...item,
                             name: String(item.name ?? ''),
                             type: String(item.type ?? ''),
-                            cost: (item.cost !== undefined && item.cost !== '') ? Number(item.cost) : ((item.actualCost !== undefined && item.actualCost !== '') ? Number(item.actualCost) : (item.expectedCost !== undefined && item.expectedCost !== '' ? Number(item.expectedCost) : 0)),
+                            cost: (item.cost !== undefined && item.cost !== '' && !isNaN(item.cost)) ? Number(item.cost) : ((item.actualCost !== undefined && item.actualCost !== '' && !isNaN(item.actualCost)) ? Number(item.actualCost) : ((item.expectedCost !== undefined && item.expectedCost !== '' && !isNaN(item.expectedCost)) ? Number(item.expectedCost) : '')),
                             completed: Boolean(item.completed || false)
                         }));
                         localStorage.setItem(STORAGE_ITEMS_KEY, JSON.stringify(items));
@@ -745,7 +745,7 @@
                                 ...item,
                                 name: String(item.name ?? ''),
                                 type: String(item.type ?? ''),
-                                cost: (item.cost !== undefined && item.cost !== '') ? Number(item.cost) : ((item.actualCost !== undefined && item.actualCost !== '') ? Number(item.actualCost) : (item.expectedCost !== undefined && item.expectedCost !== '' ? Number(item.expectedCost) : 0)),
+                                cost: (item.cost !== undefined && item.cost !== '' && !isNaN(item.cost)) ? Number(item.cost) : ((item.actualCost !== undefined && item.actualCost !== '' && !isNaN(item.actualCost)) ? Number(item.actualCost) : ((item.expectedCost !== undefined && item.expectedCost !== '' && !isNaN(item.expectedCost)) ? Number(item.expectedCost) : '')),
                                 completed: Boolean(item.completed || false)
                             }));
                             localStorage.setItem(STORAGE_ITEMS_KEY, JSON.stringify(items));
@@ -980,7 +980,7 @@
                         ...rawData,
                         name: String(rawData.name ?? ''),
                         type: String(rawData.type ?? ''),
-                        cost: (rawData.cost !== undefined && rawData.cost !== '') ? Number(rawData.cost) : ((rawData.actualCost !== undefined && rawData.actualCost !== '') ? Number(rawData.actualCost) : (rawData.expectedCost !== undefined && rawData.expectedCost !== '' ? Number(rawData.expectedCost) : 0)),
+                        cost: (rawData.cost !== undefined && rawData.cost !== '' && !isNaN(rawData.cost)) ? Number(rawData.cost) : ((rawData.actualCost !== undefined && rawData.actualCost !== '' && !isNaN(rawData.actualCost)) ? Number(rawData.actualCost) : ((rawData.expectedCost !== undefined && rawData.expectedCost !== '' && !isNaN(rawData.expectedCost)) ? Number(rawData.expectedCost) : '')),
                         completed: Boolean(rawData.completed || false)
                     });
                 });
@@ -995,7 +995,7 @@
                             ...i,
                             name: String(i.name ?? ''),
                             type: String(i.type ?? ''),
-                            cost: (i.cost !== undefined && i.cost !== '') ? Number(i.cost) : ((i.actualCost !== undefined && i.actualCost !== '') ? Number(i.actualCost) : (i.expectedCost !== undefined && i.expectedCost !== '' ? Number(i.expectedCost) : 0)),
+                            cost: (i.cost !== undefined && i.cost !== '' && !isNaN(i.cost)) ? Number(i.cost) : ((i.actualCost !== undefined && i.actualCost !== '' && !isNaN(i.actualCost)) ? Number(i.actualCost) : ((i.expectedCost !== undefined && i.expectedCost !== '' && !isNaN(i.expectedCost)) ? Number(i.expectedCost) : '')),
                             completed: Boolean(i.completed || false)
                         }));
                     } catch (e) { items = []; }
@@ -1011,7 +1011,7 @@
 
                 const name = itemNameInput.value.trim();
                 const costValRaw = itemCostInput.value.trim();
-                const cost = costValRaw !== '' ? Math.round(parseFloat(costValRaw)) || 0 : 0;
+                const cost = costValRaw !== '' ? Math.round(parseFloat(costValRaw)) || 0 : '';
                 const type = itemTypeInput.value;
                 const link = itemLinkInput.value.trim();
 
@@ -1021,11 +1021,11 @@
                 submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Sparar...`;
 
                 try {
-                    const rawCreatorName = (currentUser.email || '').split('@')[0];
+                    const rawCreatorName = currentUser.displayName || currentUser.email || '';
                     const itemData = {
                         id: Date.now().toString(),
                         name: name,
-                        cost: costValRaw !== '' ? cost : '',
+                        cost: cost,
                         type: type,
                         link: link || null,
                         completed: false,
@@ -1147,7 +1147,7 @@
                 const id = editItemIdInput.value;
                 const name = editItemNameInput.value.trim();
                 const costValRaw = editItemCostInput.value.trim();
-                const cost = costValRaw !== '' ? Math.round(parseFloat(costValRaw)) || 0 : 0;
+                const cost = costValRaw !== '' ? Math.round(parseFloat(costValRaw)) || 0 : '';
                 const type = editItemTypeInput.value;
                 const link = editItemLinkInput.value.trim();
 
@@ -1158,9 +1158,8 @@
 
                 try {
                     const idx = items.findIndex(i => i.id === id);
-                    const finalCost = costValRaw !== '' ? cost : '';
                     if (idx !== -1) {
-                        items[idx] = { ...items[idx], name, cost: finalCost, type, link: link || null };
+                        items[idx] = { ...items[idx], name, cost: cost, type, link: link || null };
                         localStorage.setItem(STORAGE_ITEMS_KEY, JSON.stringify(items));
                         render();
                     }
@@ -1168,8 +1167,17 @@
                     if (!googleWebhookUrl) {
                         try {
                             const itemRef = doc(db, ...publicDataPath, 'items', id);
-                            await updateDoc(itemRef, { name, cost: finalCost, type, link: link || null });
+                            await updateDoc(itemRef, { name, cost: cost, type, link: link || null });
                         } catch (fsErr) {}
+                    } else {
+                        try {
+                            fetch(googleWebhookUrl, {
+                                method: 'POST',
+                                mode: 'no-cors',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ target: 'item', action: 'update', id: id, name, cost: cost, type, link: link || null })
+                            });
+                        } catch (sheetErr) {}
                     }
 
                     if (editItemModal) editItemModal.classList.add('hidden');
@@ -1324,13 +1332,13 @@
         }
 
         function formatCurrency(amount) {
-            if (amount === undefined || amount === '' || isNaN(amount)) return '—';
+            if (amount === undefined || amount === '' || amount === null || isNaN(amount)) return '—';
             return new Intl.NumberFormat('sv-SE', { style: 'currency', currency: 'SEK', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(amount);
         }
 
         function updateStats(filteredItems) {
-            const activeCost = filteredItems.filter(item => !item.completed).reduce((sum, item) => sum + ((item.cost !== undefined && item.cost !== '') ? Number(item.cost) : 0), 0);
-            const completedCost = filteredItems.filter(item => item.completed).reduce((sum, item) => sum + ((item.cost !== undefined && item.cost !== '') ? Number(item.cost) : 0), 0);
+            const activeCost = filteredItems.filter(item => !item.completed).reduce((sum, item) => sum + ((item.cost !== undefined && item.cost !== '' && !isNaN(item.cost)) ? Number(item.cost) : 0), 0);
+            const completedCost = filteredItems.filter(item => item.completed).reduce((sum, item) => sum + ((item.cost !== undefined && item.cost !== '' && !isNaN(item.cost)) ? Number(item.cost) : 0), 0);
 
             const totalCount = filteredItems.length;
 
@@ -1348,7 +1356,7 @@
                 if (!categoryStats[catName]) {
                     categoryStats[catName] = { cost: 0, count: 0, color: 'stone' };
                 }
-                const costVal = (item.cost !== undefined && item.cost !== '') ? Number(item.cost) : 0;
+                const costVal = (item.cost !== undefined && item.cost !== '' && !isNaN(item.cost)) ? Number(item.cost) : 0;
                 categoryStats[catName].cost += costVal;
                 categoryStats[catName].count += 1;
             });
@@ -1424,8 +1432,8 @@
             });
 
             filtered.sort((a, b) => {
-                const aCost = (a.cost !== undefined && a.cost !== '') ? Number(a.cost) : 0;
-                const bCost = (b.cost !== undefined && b.cost !== '') ? Number(b.cost) : 0;
+                const aCost = (a.cost !== undefined && a.cost !== '' && !isNaN(a.cost)) ? Number(a.cost) : 0;
+                const bCost = (b.cost !== undefined && b.cost !== '' && !isNaN(b.cost)) ? Number(b.cost) : 0;
 
                 if (sortMode === 'actual-desc') return bCost - aCost;
                 if (sortMode === 'actual-asc') return aCost - bCost;
