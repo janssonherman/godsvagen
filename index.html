@@ -52,7 +52,7 @@
                 <button id="openCategoryModalBtn" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold py-2 px-3 rounded-xl border border-slate-200 transition-all flex items-center gap-1.5">
                     <i class="fa-solid fa-tags text-indigo-600"></i> Kategorier
                 </button>
-                <button id="logoutBtn" title="Logga ut ur applikationen" class="bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-semibold py-2 px-3 rounded-xl border border-rose-200 transition-all flex items-center gap-1.5">
+                <button id="logoutBtn" type="button" title="Logga ut ur applikationen" class="bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-semibold py-2 px-3 rounded-xl border border-rose-200 transition-all flex items-center gap-1.5 cursor-pointer">
                     <i class="fa-solid fa-right-from-bracket"></i> Logga ut
                 </button>
             </div>
@@ -118,7 +118,7 @@
                 </p>
                 <p class="text-[11px] text-slate-400">När kontot godkänns får du automatiskt tillgång till den gemensamma datan.</p>
             </div>
-            <button id="pendingLogoutBtn" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-2.5 px-4 rounded-xl text-xs transition-all flex items-center justify-center gap-2">
+            <button id="pendingLogoutBtn" type="button" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-2.5 px-4 rounded-xl text-xs transition-all flex items-center justify-center gap-2 cursor-pointer">
                 <i class="fa-solid fa-right-from-bracket"></i> Logga ut
             </button>
         </div>
@@ -425,8 +425,8 @@
                 <p id="confirmDeleteText" class="text-xs text-slate-500 mt-1">Är du säker på att du vill ta bort den här kategorin?</p>
             </div>
             <div class="flex items-center gap-2 pt-2">
-                <button id="cancelDeleteBtn" class="w-1/2 py-2 px-3 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition-all">Avbryt</button>
-                <button id="executeDeleteBtn" class="w-1/2 py-2 px-3 text-xs font-semibold text-white bg-rose-600 hover:bg-rose-700 rounded-xl shadow-sm transition-all">Ta bort</button>
+                <button id="cancelDeleteBtn" type="button" class="w-1/2 py-2 px-3 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition-all cursor-pointer">Avbryt</button>
+                <button id="executeDeleteBtn" type="button" class="w-1/2 py-2 px-3 text-xs font-semibold text-white bg-rose-600 hover:bg-rose-700 rounded-xl shadow-sm transition-all cursor-pointer">Ta bort</button>
             </div>
         </div>
     </div>
@@ -501,7 +501,9 @@
             onAuthStateChanged,
             signInWithEmailAndPassword,
             createUserWithEmailAndPassword,
-            signOut
+            signOut,
+            setPersistence,
+            browserLocalPersistence
         } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { 
             getFirestore, 
@@ -528,6 +530,10 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+        
+        // Sätt lokal persistenstyp direkt
+        setPersistence(auth, browserLocalPersistence).catch(() => {});
+
         const db = getFirestore(app);
 
         const DESIGNATED_ADMIN_EMAIL = 'herman.soderbrandt@gmail.com';
@@ -648,9 +654,21 @@
         let isRegisterMode = false;
         let googleWebhookUrl = localStorage.getItem('googleWebhookUrl') || '';
 
-        const publicDataPath = ['artifacts', appId, 'public', 'data'];
-        const STORAGE_ITEMS_KEY = 'godsvagen_items_data';
-        const STORAGE_CATS_KEY = 'godsvagen_categories_data';
+        // Kontrollera även fallback-session i localStorage för offlineläge
+        const localUserSession = localStorage.getItem('godsvagen_local_user');
+        if (localUserSession) {
+            try {
+                currentUser = JSON.parse(localUserSession);
+                if (currentUser && currentUser.email) {
+                    const isDesignatedAdmin = currentUser.email.toLowerCase() === DESIGNATED_ADMIN_EMAIL.toLowerCase();
+                    currentUserRole = isDesignatedAdmin ? 'admin' : 'user';
+                    currentUserStatus = 'approved';
+                    setTimeout(() => {
+                        updateUIForUserStatus();
+                    }, 50);
+                }
+            } catch (e) {}
+        }
 
         if (webhookUrlInput) {
             webhookUrlInput.value = googleWebhookUrl;
@@ -705,15 +723,15 @@
         }
 
         onAuthStateChanged(auth, async (user) => {
-            currentUser = user;
-
-            if (unsubscribeUsers) unsubscribeUsers();
-            if (unsubscribeItems) unsubscribeItems();
-            if (unsubscribeCategories) unsubscribeCategories();
-
             if (user) {
+                currentUser = user;
+                localStorage.setItem('godsvagen_local_user', JSON.stringify({ uid: user.uid, email: user.email }));
                 if (userEmailDisplay) userEmailDisplay.textContent = user.email || 'användare';
                 
+                if (unsubscribeUsers) unsubscribeUsers();
+                if (unsubscribeItems) unsubscribeItems();
+                if (unsubscribeCategories) unsubscribeCategories();
+
                 const usersRef = collection(db, ...publicDataPath, 'users');
                 unsubscribeUsers = onSnapshot(usersRef, async (snapshot) => {
                     systemUsers = [];
@@ -775,36 +793,39 @@
                     currentUserStatus = 'approved';
                     updateUIForUserStatus();
                 });
-            } else {
-                if (authOverlay) authOverlay.classList.remove('hidden');
-                if (pendingOverlay) pendingOverlay.classList.add('hidden');
-                if (appMainContent) appMainContent.classList.add('hidden');
-                if (headerActions) headerActions.classList.add('hidden');
-                if (syncBadge) {
-                    syncBadge.className = "inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-100 text-amber-800";
-                    syncBadge.innerHTML = `<i class="fa-solid fa-lock text-[10px]"></i> Ej inloggad`;
-                }
+            } else if (!localUserSession) {
+                resetUIForLoggedOut();
             }
         });
 
-        async function handleUserLogout() {
+        function resetUIForLoggedOut() {
+            currentUser = null;
+            currentUserRole = 'user';
+            currentUserStatus = 'pending';
+            localStorage.removeItem('godsvagen_local_user');
+            if (unsubscribeUsers) unsubscribeUsers();
+            if (unsubscribeItems) unsubscribeItems();
+            if (unsubscribeCategories) unsubscribeCategories();
+
+            if (authOverlay) authOverlay.classList.remove('hidden');
+            if (pendingOverlay) pendingOverlay.classList.add('hidden');
+            if (appMainContent) appMainContent.classList.add('hidden');
+            if (headerActions) headerActions.classList.add('hidden');
+            if (syncBadge) {
+                syncBadge.className = "inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-100 text-amber-800";
+                syncBadge.innerHTML = `<i class="fa-solid fa-lock text-[10px]"></i> Ej inloggad`;
+            }
+        }
+
+        async function handleUserLogout(e) {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
             try {
                 await signOut(auth);
-            } catch (err) {
-                console.warn("SignOut notice:", err);
-            } finally {
-                currentUser = null;
-                currentUserRole = 'user';
-                currentUserStatus = 'pending';
-                if (authOverlay) authOverlay.classList.remove('hidden');
-                if (pendingOverlay) pendingOverlay.classList.add('hidden');
-                if (appMainContent) appMainContent.classList.add('hidden');
-                if (headerActions) headerActions.classList.add('hidden');
-                if (syncBadge) {
-                    syncBadge.className = "inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-100 text-amber-800";
-                    syncBadge.innerHTML = `<i class="fa-solid fa-lock text-[10px]"></i> Ej inloggad`;
-                }
-            }
+            } catch (err) {}
+            resetUIForLoggedOut();
         }
 
         if (logoutBtn) logoutBtn.addEventListener('click', handleUserLogout);
@@ -851,6 +872,7 @@
                     currentUser = { uid: 'user_' + btoa(email).replace(/=/g, ''), email: email };
                     currentUserRole = isDesignatedAdmin ? 'admin' : 'user';
                     currentUserStatus = 'approved';
+                    localStorage.setItem('godsvagen_local_user', JSON.stringify(currentUser));
                     if (userEmailDisplay) userEmailDisplay.textContent = email;
                     updateUIForUserStatus();
                     showNotification("Inloggad i demoläge.");
@@ -1017,6 +1039,9 @@
                     userProfileBadge.classList.remove('hidden');
                     userProfileBadge.classList.add('flex');
                 }
+                if (userEmailDisplay && currentUser && currentUser.email) {
+                    userEmailDisplay.textContent = currentUser.email;
+                }
 
                 if (currentUserRole === 'admin') {
                     if (openUserMgmtBtn) {
@@ -1043,7 +1068,7 @@
             } else {
                 if (authOverlay) authOverlay.classList.add('hidden');
                 if (pendingOverlay) pendingOverlay.classList.remove('hidden');
-                if (pendingUserEmail) pendingUserEmail.textContent = currentUser.email || 'din e-post';
+                if (pendingUserEmail && currentUser) pendingUserEmail.textContent = currentUser.email || 'din e-post';
                 if (appMainContent) appMainContent.classList.add('hidden');
                 if (headerActions) headerActions.classList.add('hidden');
             }
@@ -1081,15 +1106,15 @@
                 const actionBtns = isMe ? `<span class="text-[11px] text-slate-400 italic">(Du)</span>` : `
                     <div class="flex items-center gap-1.5">
                         ${u.status !== 'approved' ? `
-                            <button onclick="setUserStatus('${u.id}', 'approved')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-semibold px-2.5 py-1 rounded-lg transition-all">
+                            <button onclick="setUserStatus('${u.id}', 'approved')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-semibold px-2.5 py-1 rounded-lg transition-all cursor-pointer">
                                 Godkänn
                             </button>
                         ` : `
-                            <button onclick="setUserStatus('${u.id}', 'pending')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-semibold px-2 py-1 rounded-lg transition-all">
+                            <button onclick="setUserStatus('${u.id}', 'pending')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-semibold px-2 py-1 rounded-lg transition-all cursor-pointer">
                                 Återkalla
                             </button>
                         `}
-                        <button onclick="deleteUserRequest('${u.id}')" title="Ta bort" class="text-slate-300 hover:text-rose-600 p-1 rounded-lg">
+                        <button onclick="deleteUserRequest('${u.id}')" title="Ta bort" class="text-slate-300 hover:text-rose-600 p-1 rounded-lg cursor-pointer">
                             <i class="fa-solid fa-trash-can text-xs"></i>
                         </button>
                     </div>
@@ -1177,10 +1202,10 @@
                         <span class="text-[10px] text-slate-400 font-mono">(${cat.color})</span>
                     </div>
                     <div class="flex items-center gap-1">
-                        <button onclick="editCategory('${cat.id}', '${escapeHtml(cat.name)}', '${cat.color}')" title="Ändra färg / namn" class="text-slate-300 hover:text-indigo-600 p-1 rounded-lg">
+                        <button onclick="editCategory('${cat.id}', '${escapeHtml(cat.name)}', '${cat.color}')" title="Ändra färg / namn" class="text-slate-300 hover:text-indigo-600 p-1 rounded-lg cursor-pointer">
                             <i class="fa-solid fa-pen-to-square text-xs"></i>
                         </button>
-                        <button onclick="confirmDeleteCategory('${cat.id}', '${escapeHtml(cat.name)}')" title="Ta bort kategori" class="text-slate-300 hover:text-rose-600 p-1 rounded-lg">
+                        <button onclick="confirmDeleteCategory('${cat.id}', '${escapeHtml(cat.name)}')" title="Ta bort kategori" class="text-slate-300 hover:text-rose-600 p-1 rounded-lg cursor-pointer">
                             <i class="fa-solid fa-trash-can text-xs"></i>
                         </button>
                     </div>
@@ -1726,11 +1751,11 @@
                         <td class="py-3.5 px-3 text-center">
                             <div class="flex items-center justify-center gap-1">
                                 <button onclick="openEditModal('${item.id}')" title="Redigera post" 
-                                    class="text-slate-300 hover:text-indigo-600 p-1.5 rounded-lg hover:bg-indigo-50 transition-colors">
+                                    class="text-slate-300 hover:text-indigo-600 p-1.5 rounded-lg hover:bg-indigo-50 transition-colors cursor-pointer">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                 </button>
                                 <button onclick="deleteItem('${item.id}')" title="Ta bort post" 
-                                    class="text-slate-300 hover:text-rose-600 p-1.5 rounded-lg hover:bg-rose-50 transition-colors">
+                                    class="text-slate-300 hover:text-rose-600 p-1.5 rounded-lg hover:bg-rose-50 transition-colors cursor-pointer">
                                     <i class="fa-solid fa-trash-can"></i>
                                 </button>
                             </div>
