@@ -84,7 +84,7 @@
                     <label for="authEmail" class="block text-xs font-semibold text-slate-600 mb-1">E-postadress</label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400 text-xs"><i class="fa-solid fa-envelope"></i></span>
-                        <input type="email" id="authEmail" required value="herman.soderbrandt@gmail.com" placeholder="namn@exempel.se" data-lpignore="true" autocomplete="email"
+                        <input type="email" id="authEmail" required placeholder="namn@exempel.se" data-lpignore="true" autocomplete="email"
                             class="w-full pl-9 pr-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all">
                     </div>
                 </div>
@@ -626,7 +626,10 @@
         let unsubscribeUsers = null;
         let pendingDeleteCategoryId = null;
         let isRegisterMode = false;
-        let googleWebhookUrl = localStorage.getItem('googleWebhookUrl') || '';
+        
+        // Här kan du klistra in din Google Apps Script Web App-URL direkt i koden
+        // Om du lämnar denna tom kan du fortfarande ange den via "Sheets"-knappen i webbläsaren.
+        let googleWebhookUrl = 'https://script.google.com/macros/s/AKfycbzSPgY2-qHidL9H-xrrOkCZZUNT7qsfmU_x9TyPCm3h7SkI9Cy8HO3_Nfo1LLCr4B4O/exec' || localStorage.getItem('googleWebhookUrl') || '';
 
         const localUserSession = localStorage.getItem('godsvagen_local_user');
         if (localUserSession) {
