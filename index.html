@@ -787,6 +787,22 @@
             }
         });
 
+        async function handleUserLogout() {
+            try {
+                await signOut(auth);
+            } catch (err) {
+                // Tvångsrensning om nätverk eller session misslyckas
+                currentUser = null;
+                if (authOverlay) authOverlay.classList.remove('hidden');
+                if (pendingOverlay) pendingOverlay.classList.add('hidden');
+                if (appMainContent) appMainContent.classList.add('hidden');
+                if (headerActions) headerActions.classList.add('hidden');
+            }
+        }
+
+        if (logoutBtn) logoutBtn.addEventListener('click', handleUserLogout);
+        if (pendingLogoutBtn) pendingLogoutBtn.addEventListener('click', handleUserLogout);
+
         if (tabLogin && tabRegister) {
             tabLogin.addEventListener('click', () => {
                 isRegisterMode = false;
@@ -837,9 +853,6 @@
                 }
             });
         }
-
-        if (logoutBtn) logoutBtn.addEventListener('click', () => signOut(auth));
-        if (pendingLogoutBtn) pendingLogoutBtn.addEventListener('click', () => signOut(auth));
 
         if (openUserMgmtBtn) {
             openUserMgmtBtn.addEventListener('click', () => {
