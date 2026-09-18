@@ -40,19 +40,19 @@
                     <i class="fa-solid fa-user-circle text-indigo-600 text-sm"></i>
                     <span id="userEmailDisplay">användare</span>
                 </div>
-                <button id="openUserMgmtBtn" class="hidden bg-amber-50 hover:bg-amber-100 text-amber-800 text-xs font-semibold py-2 px-3 rounded-xl border border-amber-200 transition-all items-center gap-1.5">
+                <button id="openUserMgmtBtn" class="hidden bg-amber-50 hover:bg-amber-100 text-amber-800 text-xs font-semibold py-2 px-3 rounded-xl border border-amber-200 transition-all items-center gap-1.5 cursor-pointer">
                     <i class="fa-solid fa-users-gear text-amber-600"></i> Användare <span id="pendingCountBadge" class="hidden bg-amber-500 text-white text-[10px] px-1.5 py-0.5 rounded-full font-bold">0</span>
                 </button>
-                <button id="exportCsvBtn" title="Ladda ner CSV för Google Sheets" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-semibold py-2 px-3 rounded-xl border border-emerald-200 transition-all flex items-center gap-1.5">
+                <button id="exportCsvBtn" title="Ladda ner CSV för Google Sheets" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-semibold py-2 px-3 rounded-xl border border-emerald-200 transition-all flex items-center gap-1.5 cursor-pointer">
                     <i class="fa-solid fa-file-excel text-emerald-600"></i> Exportera CSV
                 </button>
-                <button id="openSheetsModalBtn" title="Koppla direkt till Google Sheets" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold py-2 px-3 rounded-xl border border-slate-200 transition-all flex items-center gap-1.5">
+                <button id="openSheetsModalBtn" title="Koppla direkt till Google Sheets" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold py-2 px-3 rounded-xl border border-slate-200 transition-all flex items-center gap-1.5 cursor-pointer">
                     <i class="fa-solid fa-table text-emerald-600"></i> Sheets
                 </button>
-                <button id="openCategoryModalBtn" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold py-2 px-3 rounded-xl border border-slate-200 transition-all flex items-center gap-1.5">
+                <button id="openCategoryModalBtn" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold py-2 px-3 rounded-xl border border-slate-200 transition-all flex items-center gap-1.5 cursor-pointer">
                     <i class="fa-solid fa-tags text-indigo-600"></i> Kategorier
                 </button>
-                <button id="logoutBtn" title="Logga ut ur applikationen" class="bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-semibold py-2 px-3 rounded-xl border border-rose-200 transition-all flex items-center gap-1.5">
+                <button id="logoutBtn" type="button" title="Logga ut ur applikationen" class="bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-semibold py-2 px-3 rounded-xl border border-rose-200 transition-all flex items-center gap-1.5 cursor-pointer">
                     <i class="fa-solid fa-right-from-bracket"></i> Logga ut
                 </button>
             </div>
@@ -75,8 +75,8 @@
             </div>
 
             <div class="flex border-b border-slate-200">
-                <button id="tabLogin" class="w-1/2 py-2 text-xs font-bold text-indigo-600 border-b-2 border-indigo-600 transition-all">Logga in</button>
-                <button id="tabRegister" class="w-1/2 py-2 text-xs font-bold text-slate-400 hover:text-slate-600 border-b-2 border-transparent transition-all">Skapa konto</button>
+                <button id="tabLogin" type="button" class="w-1/2 py-2 text-xs font-bold text-indigo-600 border-b-2 border-indigo-600 transition-all cursor-pointer">Logga in</button>
+                <button id="tabRegister" type="button" class="w-1/2 py-2 text-xs font-bold text-slate-400 hover:text-slate-600 border-b-2 border-transparent transition-all cursor-pointer">Skapa konto</button>
             </div>
 
             <form id="emailAuthForm" class="space-y-4">
@@ -84,7 +84,7 @@
                     <label for="authEmail" class="block text-xs font-semibold text-slate-600 mb-1">E-postadress</label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400 text-xs"><i class="fa-solid fa-envelope"></i></span>
-                        <input type="email" id="authEmail" required value="herman.soderbrandt@gmail.com" placeholder="namn@exempel.se"
+                        <input type="email" id="authEmail" required value="herman.soderbrandt@gmail.com" placeholder="namn@exempel.se" data-lpignore="true" autocomplete="email"
                             class="w-full pl-9 pr-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all">
                     </div>
                 </div>
@@ -93,13 +93,13 @@
                     <label for="authPassword" class="block text-xs font-semibold text-slate-600 mb-1">Lösenord</label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400 text-xs"><i class="fa-solid fa-key"></i></span>
-                        <input type="password" id="authPassword" required minlength="6" placeholder="••••••••"
+                        <input type="password" id="authPassword" required minlength="6" placeholder="••••••••" data-lpignore="true" autocomplete="current-password"
                             class="w-full pl-9 pr-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all">
                     </div>
                 </div>
 
                 <button type="submit" id="authSubmitBtn"
-                    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-4 rounded-xl shadow-md hover:shadow-indigo-200 transition-all flex items-center justify-center gap-2 text-sm">
+                    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-4 rounded-xl shadow-md hover:shadow-indigo-200 transition-all flex items-center justify-center gap-2 text-sm cursor-pointer">
                     <i class="fa-solid fa-right-to-bracket"></i> <span id="authSubmitText">Logga in</span>
                 </button>
             </form>
@@ -118,7 +118,7 @@
                 </p>
                 <p class="text-[11px] text-slate-400">När kontot godkänns får du automatiskt tillgång till den gemensamma datan.</p>
             </div>
-            <button id="pendingLogoutBtn" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-2.5 px-4 rounded-xl text-xs transition-all flex items-center justify-center gap-2">
+            <button id="pendingLogoutBtn" type="button" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-2.5 px-4 rounded-xl text-xs transition-all flex items-center justify-center gap-2 cursor-pointer">
                 <i class="fa-solid fa-right-from-bracket"></i> Logga ut
             </button>
         </div>
@@ -131,7 +131,7 @@
                     <i class="fa-solid fa-users-gear text-amber-600"></i>
                     <h3 class="font-bold text-slate-900">Hantera användare & åtkomst</h3>
                 </div>
-                <button id="closeUserMgmtModalBtn" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">
+                <button id="closeUserMgmtModalBtn" type="button" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg cursor-pointer">
                     <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
             </div>
@@ -153,7 +153,7 @@
                 <i class="fa-solid fa-circle-info text-blue-600"></i>
                 <span id="cloudAlertText">Ansluten till ditt konto. Ändringar synkroniseras i realtid.</span>
             </div>
-            <button onclick="document.getElementById('cloudAlert').classList.add('hidden')" class="text-blue-500 hover:text-blue-700">
+            <button type="button" onclick="document.getElementById('cloudAlert').classList.add('hidden')" class="text-blue-500 hover:text-blue-700 cursor-pointer">
                 <i class="fa-solid fa-xmark"></i>
             </button>
         </div>
@@ -164,27 +164,18 @@
                 <i class="fa-solid fa-plus-circle text-indigo-600"></i> Lägg till ny post
             </h2>
             
-            <form id="itemForm" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 items-end">
+            <form id="itemForm" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-end" autocomplete="off">
                 <div class="lg:col-span-1">
                     <label for="itemName" class="block text-xs font-semibold text-slate-600 mb-1">Namn på post</label>
-                    <input type="text" id="itemName" required placeholder="t.ex. Material" 
+                    <input type="text" id="itemName" required placeholder="t.ex. Material" data-lpignore="true" autocomplete="off"
                         class="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all">
                 </div>
 
                 <div>
-                    <label for="itemExpectedCost" class="block text-xs font-semibold text-slate-600 mb-1">Förväntad kostnad (kr)</label>
+                    <label for="itemCost" class="block text-xs font-semibold text-slate-600 mb-1">Kostnad (kr)</label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 text-xs font-semibold">kr</span>
-                        <input type="number" id="itemExpectedCost" required step="1" min="0" placeholder="0" 
-                            class="w-full pl-8 pr-2.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all">
-                    </div>
-                </div>
-
-                <div>
-                    <label for="itemActualCost" class="block text-xs font-semibold text-slate-600 mb-1">Faktisk kostnad (kr)</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 text-xs font-semibold">kr</span>
-                        <input type="number" id="itemActualCost" required step="1" min="0" placeholder="0" 
+                        <input type="number" id="itemCost" required step="1" min="0" placeholder="0" data-lpignore="true" autocomplete="off"
                             class="w-full pl-8 pr-2.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all">
                     </div>
                 </div>
@@ -192,9 +183,9 @@
                 <div>
                     <div class="flex items-center justify-between mb-1">
                         <label for="itemType" class="block text-xs font-semibold text-slate-600">Kategori</label>
-                        <button type="button" id="quickManageCatBtn" class="text-[11px] text-indigo-600 hover:text-indigo-800 font-medium">+ Hantera</button>
+                        <button type="button" id="quickManageCatBtn" class="text-[11px] text-indigo-600 hover:text-indigo-800 font-medium cursor-pointer">+ Hantera</button>
                     </div>
-                    <select id="itemType" required 
+                    <select id="itemType" required data-lpignore="true" autocomplete="off"
                         class="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-slate-700">
                         <option value="" disabled selected>Inga kategorier</option>
                     </select>
@@ -202,13 +193,13 @@
 
                 <div>
                     <label for="itemLink" class="block text-xs font-semibold text-slate-600 mb-1">Länk <span class="text-slate-400 font-normal">(Valfritt)</span></label>
-                    <input type="url" id="itemLink" placeholder="https://..." 
+                    <input type="url" id="itemLink" placeholder="https://..." data-lpignore="true" autocomplete="off"
                         class="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all">
                 </div>
 
-                <div class="lg:col-span-5 pt-2">
+                <div class="lg:col-span-4 pt-2">
                     <button type="submit" id="submitBtn" disabled
-                        class="w-full bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-3 px-4 rounded-xl shadow-md hover:shadow-indigo-200 transition-all flex items-center justify-center gap-2 text-sm">
+                        class="w-full bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-3 px-4 rounded-xl shadow-md hover:shadow-indigo-200 transition-all flex items-center justify-center gap-2 text-sm cursor-pointer">
                         <i class="fa-solid fa-cloud-arrow-up"></i> Spara till molnet
                     </button>
                 </div>
@@ -216,35 +207,24 @@
         </section>
 
         <!-- Dynamic Statistics Row -->
-        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80 flex items-center justify-between">
                 <div>
-                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Förväntad kostnad</p>
-                    <h3 id="statExpectedCost" class="text-2xl font-bold text-slate-900 mt-1">0 kr</h3>
+                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Ej klara</p>
+                    <h3 id="statActiveCost" class="text-2xl font-bold text-amber-600 mt-1">0 kr</h3>
                 </div>
-                <div class="w-12 h-12 bg-sky-50 text-sky-600 rounded-xl flex items-center justify-center text-xl">
-                    <i class="fa-solid fa-calculator"></i>
+                <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center text-xl">
+                    <i class="fa-solid fa-clock"></i>
                 </div>
             </div>
 
             <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80 flex items-center justify-between">
                 <div>
-                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Faktisk kostnad</p>
-                    <h3 id="statActualCost" class="text-2xl font-bold text-slate-900 mt-1">0 kr</h3>
+                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Klara</p>
+                    <h3 id="statCompletedCost" class="text-2xl font-bold text-emerald-600 mt-1">0 kr</h3>
                 </div>
-                <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center text-xl">
-                    <i class="fa-solid fa-receipt"></i>
-                </div>
-            </div>
-
-            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80 flex items-center justify-between">
-                <div>
-                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Differens (Avvikelse)</p>
-                    <h3 id="statDiffCost" class="text-2xl font-bold text-slate-900 mt-1">0 kr</h3>
-                    <p id="statDiffLabel" class="text-[11px] text-slate-400 mt-0.5">Faktisk vs Förväntad</p>
-                </div>
-                <div id="statDiffBadge" class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center text-xl">
-                    <i class="fa-solid fa-scale-balanced"></i>
+                <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center text-xl">
+                    <i class="fa-solid fa-check-circle"></i>
                 </div>
             </div>
 
@@ -253,7 +233,7 @@
                     <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Antal poster</p>
                     <h3 id="statTotalItems" class="text-2xl font-bold text-slate-900 mt-1">0</h3>
                 </div>
-                <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center text-xl">
+                <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center text-xl">
                     <i class="fa-solid fa-cubes"></i>
                 </div>
             </div>
@@ -274,23 +254,29 @@
                     <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 text-sm">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </span>
-                    <input type="text" id="searchInput" placeholder="Sök på namn..." 
+                    <input type="text" id="searchInput" placeholder="Sök på namn..." data-lpignore="true" autocomplete="off"
                         class="w-full pl-9 pr-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all">
                 </div>
 
-                <div class="flex items-center gap-2 w-full md:w-auto">
-                    <select id="filterType" 
-                        class="w-full md:w-auto px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-slate-700">
+                <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
+                    <select id="filterStatus" data-lpignore="true" autocomplete="off"
+                        class="w-full sm:w-auto px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-slate-700">
+                        <option value="active" selected>Ej klara (visa aktiva)</option>
+                        <option value="all">Alla (klara och ej klara)</option>
+                        <option value="completed">Endast klara</option>
+                    </select>
+
+                    <select id="filterType" data-lpignore="true" autocomplete="off"
+                        class="w-full sm:w-auto px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-slate-700">
                         <option value="ALL">Alla kategorier</option>
                     </select>
 
-                    <select id="sortBy" 
-                        class="w-full md:w-auto px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-slate-700">
+                    <select id="sortBy" data-lpignore="true" autocomplete="off"
+                        class="w-full sm:w-auto px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-slate-700">
                         <option value="date-desc">Nyast först</option>
                         <option value="date-asc">Äldst först</option>
-                        <option value="actual-desc">Faktisk kostnad: Högst först</option>
-                        <option value="actual-asc">Faktisk kostnad: Lägst först</option>
-                        <option value="expected-desc">Förväntad kostnad: Högst först</option>
+                        <option value="actual-desc">Kostnad: Högst först</option>
+                        <option value="actual-asc">Kostnad: Lägst först</option>
                     </select>
                 </div>
             </div>
@@ -299,12 +285,11 @@
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-slate-200 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                            <th class="py-3 px-3 w-10 text-center">Klar</th>
                             <th class="py-3 px-3">Post</th>
                             <th class="py-3 px-3">Kategori</th>
                             <th class="py-3 px-3">Länk</th>
-                            <th class="py-3 px-3 text-right">Förväntad</th>
-                            <th class="py-3 px-3 text-right">Faktisk</th>
-                            <th class="py-3 px-3 text-right">Diff</th>
+                            <th class="py-3 px-3 text-right">Kostnad</th>
                             <th class="py-3 px-3 text-center">Åtgärd</th>
                         </tr>
                     </thead>
@@ -317,7 +302,7 @@
                         <i class="fa-solid fa-cloud-sun"></i>
                     </div>
                     <h4 class="text-base font-semibold text-slate-700">Inga poster hittades</h4>
-                    <p class="text-xs text-slate-400 mt-1 max-w-sm mx-auto">Lägg till en ny post ovan eller rensa dina sök- och kategorifilter.</p>
+                    <p class="text-xs text-slate-400 mt-1 max-w-sm mx-auto">Lägg till en ny post ovan eller rensa dina sök- och statusfilter.</p>
                 </div>
             </div>
         </section>
@@ -331,7 +316,7 @@
                     <i class="fa-solid fa-table text-emerald-600"></i>
                     <h3 class="font-bold text-slate-900">Koppla & Synka med Google Sheets</h3>
                 </div>
-                <button id="closeSheetsModalBtn" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">
+                <button id="closeSheetsModalBtn" type="button" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg cursor-pointer">
                     <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
             </div>
@@ -341,21 +326,21 @@
                     <h4 class="font-bold text-emerald-900 text-sm flex items-center gap-1.5">
                         <i class="fa-solid fa-bolt text-amber-500"></i> Synkronisering för Godsvägen & Inköpskategorier
                     </h4>
-                    <p>Klistra in din Google Apps Script Webapp-URL nedan för att läsa och spara poster (`Godsvägen`) samt kategorier med färger (`Inköpskategorier`) direkt i ditt Google Sheet.</p>
+                    <p>Klistra in din Google Apps Script Webapp-URL nedan för att läsa och spara poster (`Godsvägen`) samt kategorier från fliken `Inköpskategorier` direkt i ditt Google Sheet.</p>
                 </div>
 
                 <div class="space-y-3 bg-slate-50 p-4 border border-slate-200 rounded-xl">
                     <div>
                         <label for="webhookUrlInput" class="block font-semibold text-slate-700 mb-1">Google Apps Script Web App URL</label>
-                        <input type="url" id="webhookUrlInput" placeholder="https://script.google.com/macros/s/.../exec"
+                        <input type="url" id="webhookUrlInput" placeholder="https://script.google.com/macros/s/.../exec" data-lpignore="true" autocomplete="off"
                             class="w-full px-3 py-2 border rounded-lg text-xs font-mono bg-white border-slate-300 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500">
                     </div>
 
                     <div class="flex justify-between items-center gap-2 pt-1">
-                        <button id="syncFromSheetsBtn" class="bg-slate-800 hover:bg-slate-900 text-white font-semibold py-1.5 px-3 rounded-lg text-xs flex items-center gap-1.5">
+                        <button id="syncFromSheetsBtn" type="button" class="bg-slate-800 hover:bg-slate-900 text-white font-semibold py-1.5 px-3 rounded-lg text-xs flex items-center gap-1.5 cursor-pointer">
                             <i class="fa-solid fa-rotate"></i> Läs in data från Sheets
                         </button>
-                        <button id="saveWebhookBtn" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-1.5 px-3 rounded-lg text-xs flex items-center gap-1.5">
+                        <button id="saveWebhookBtn" type="button" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-1.5 px-3 rounded-lg text-xs flex items-center gap-1.5 cursor-pointer">
                             <i class="fa-solid fa-floppy-disk"></i> Spara URL
                         </button>
                     </div>
@@ -372,22 +357,22 @@
                     <i class="fa-solid fa-tags text-indigo-600"></i>
                     <h3 class="font-bold text-slate-900">Hantera inköpskategorier</h3>
                 </div>
-                <button id="closeCategoryModalBtn" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">
+                <button id="closeCategoryModalBtn" type="button" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg cursor-pointer">
                     <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
             </div>
 
             <div class="p-5 space-y-4 max-h-[80vh] overflow-y-auto">
-                <form id="addCategoryForm" class="space-y-3 p-3 bg-slate-50 border border-slate-200/80 rounded-xl">
+                <form id="addCategoryForm" class="space-y-3 p-3 bg-slate-50 border border-slate-200/80 rounded-xl" autocomplete="off">
                     <span id="catFormTitle" class="text-xs font-semibold text-slate-600 uppercase tracking-wider block">Lägg till ny kategori</span>
                     <input type="hidden" id="editCategoryId">
                     <div>
-                        <input type="text" id="newCategoryName" required placeholder="Kategorinamn (t.ex. Material)"
+                        <input type="text" id="newCategoryName" required placeholder="Kategorinamn (t.ex. Material)" data-lpignore="true" autocomplete="off"
                             class="w-full px-3 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500">
                     </div>
                     <div>
                         <label class="block text-[11px] font-medium text-slate-500 mb-1">Färgtema för tagg</label>
-                        <select id="newCategoryColor" class="w-full px-3 py-1.5 text-xs bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500">
+                        <select id="newCategoryColor" data-lpignore="true" autocomplete="off" class="w-full px-3 py-1.5 text-xs bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500">
                             <option value="emerald">Smaragdgrön</option>
                             <option value="amber">Bärnstensgul</option>
                             <option value="purple">Lila</option>
@@ -398,10 +383,10 @@
                         </select>
                     </div>
                     <div class="flex items-center gap-2">
-                        <button type="submit" id="addCatBtn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-3 rounded-lg text-xs transition-all flex items-center justify-center gap-1.5">
+                        <button type="submit" id="addCatBtn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-3 rounded-lg text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer">
                             <i class="fa-solid fa-plus"></i> <span id="catSubmitText">Skapa kategori</span>
                         </button>
-                        <button type="button" id="cancelCatEditBtn" class="hidden px-3 py-2 text-xs font-semibold text-slate-600 bg-slate-200 hover:bg-slate-300 rounded-lg transition-all">Avbryt</button>
+                        <button type="button" id="cancelCatEditBtn" class="hidden px-3 py-2 text-xs font-semibold text-slate-600 bg-slate-200 hover:bg-slate-300 rounded-lg transition-all cursor-pointer">Avbryt</button>
                     </div>
                 </form>
 
@@ -425,8 +410,8 @@
                 <p id="confirmDeleteText" class="text-xs text-slate-500 mt-1">Är du säker på att du vill ta bort den här kategorin?</p>
             </div>
             <div class="flex items-center gap-2 pt-2">
-                <button id="cancelDeleteBtn" class="w-1/2 py-2 px-3 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition-all">Avbryt</button>
-                <button id="executeDeleteBtn" class="w-1/2 py-2 px-3 text-xs font-semibold text-white bg-rose-600 hover:bg-rose-700 rounded-xl shadow-sm transition-all">Ta bort</button>
+                <button id="cancelDeleteBtn" type="button" class="w-1/2 py-2 px-3 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition-all cursor-pointer">Avbryt</button>
+                <button id="executeDeleteBtn" type="button" class="w-1/2 py-2 px-3 text-xs font-semibold text-white bg-rose-600 hover:bg-rose-700 rounded-xl shadow-sm transition-all cursor-pointer">Ta bort</button>
             </div>
         </div>
     </div>
@@ -439,54 +424,44 @@
                     <i class="fa-solid fa-pen-to-square text-indigo-600"></i>
                     <h3 class="font-bold text-slate-900">Redigera post</h3>
                 </div>
-                <button id="closeEditItemModalBtn" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">
+                <button id="closeEditItemModalBtn" type="button" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg cursor-pointer">
                     <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
             </div>
 
-            <form id="editItemForm" class="p-5 space-y-4">
+            <form id="editItemForm" class="p-5 space-y-4" autocomplete="off">
                 <input type="hidden" id="editItemId">
                 <div>
                     <label for="editItemName" class="block text-xs font-semibold text-slate-600 mb-1">Namn på post</label>
-                    <input type="text" id="editItemName" required
+                    <input type="text" id="editItemName" required data-lpignore="true" autocomplete="off"
                         class="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all">
                 </div>
 
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label for="editItemExpectedCost" class="block text-xs font-semibold text-slate-600 mb-1">Förväntad (kr)</label>
-                        <div class="relative">
-                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 text-xs font-semibold">kr</span>
-                            <input type="number" id="editItemExpectedCost" required step="1" min="0"
-                                class="w-full pl-8 pr-2.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all">
-                        </div>
-                    </div>
-                    <div>
-                        <label for="editItemActualCost" class="block text-xs font-semibold text-slate-600 mb-1">Faktisk (kr)</label>
-                        <div class="relative">
-                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 text-xs font-semibold">kr</span>
-                            <input type="number" id="editItemActualCost" required step="1" min="0"
-                                class="w-full pl-8 pr-2.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all">
-                        </div>
+                <div>
+                    <label for="editItemCost" class="block text-xs font-semibold text-slate-600 mb-1">Kostnad (kr)</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 text-xs font-semibold">kr</span>
+                        <input type="number" id="editItemCost" required step="1" min="0" data-lpignore="true" autocomplete="off"
+                            class="w-full pl-8 pr-2.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all">
                     </div>
                 </div>
 
                 <div>
                     <label for="editItemType" class="block text-xs font-semibold text-slate-600 mb-1">Kategori</label>
-                    <select id="editItemType" required
+                    <select id="editItemType" required data-lpignore="true" autocomplete="off"
                         class="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-slate-700">
                     </select>
                 </div>
 
                 <div>
                     <label for="editItemLink" class="block text-xs font-semibold text-slate-600 mb-1">Länk <span class="text-slate-400 font-normal">(Valfritt)</span></label>
-                    <input type="url" id="editItemLink" placeholder="https://..."
+                    <input type="url" id="editItemLink" placeholder="https://..." data-lpignore="true" autocomplete="off"
                         class="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all">
                 </div>
 
                 <div class="flex items-center justify-end gap-2 pt-2">
-                    <button type="button" id="cancelEditBtn" class="px-4 py-2.5 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition-all">Avbryt</button>
-                    <button type="submit" id="saveEditBtn" class="px-4 py-2.5 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-sm transition-all flex items-center gap-1.5">
+                    <button type="button" id="cancelEditBtn" class="px-4 py-2.5 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition-all cursor-pointer">Avbryt</button>
+                    <button type="submit" id="saveEditBtn" class="px-4 py-2.5 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-sm transition-all flex items-center gap-1.5 cursor-pointer">
                         <i class="fa-solid fa-floppy-disk"></i> Spara ändringar
                     </button>
                 </div>
@@ -501,7 +476,9 @@
             onAuthStateChanged,
             signInWithEmailAndPassword,
             createUserWithEmailAndPassword,
-            signOut
+            signOut,
+            setPersistence,
+            browserLocalPersistence
         } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { 
             getFirestore, 
@@ -528,9 +505,15 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+        
+        setPersistence(auth, browserLocalPersistence).catch(() => {});
+
         const db = getFirestore(app);
 
         const DESIGNATED_ADMIN_EMAIL = 'herman.soderbrandt@gmail.com';
+        const STORAGE_ITEMS_KEY = 'godsvagen_local_items_' + appId;
+        const STORAGE_CATS_KEY = 'godsvagen_local_cats_' + appId;
+        const publicDataPath = ['artifacts', appId, 'public', 'data'];
 
         const colorStyles = {
             emerald: 'bg-emerald-50 text-emerald-700 border-emerald-200',
@@ -576,25 +559,33 @@
         const cloudAlert = document.getElementById('cloudAlert');
         const cloudAlertText = document.getElementById('cloudAlertText');
 
-        const statExpectedCost = document.getElementById('statExpectedCost');
-        const statActualCost = document.getElementById('statActualCost');
-        const statDiffCost = document.getElementById('statDiffCost');
-        const statDiffLabel = document.getElementById('statDiffLabel');
-        const statDiffBadge = document.getElementById('statDiffBadge');
+        const statTotalCost = document.getElementById('statTotalCost');
+        const statActiveCost = document.getElementById('statActiveCost');
+        const statCompletedCost = document.getElementById('statCompletedCost');
         const statTotalItems = document.getElementById('statTotalItems');
+        const statTotalCats = document.getElementById('statTotalCats');
 
         const categorySummaryList = document.getElementById('categorySummaryList');
 
         const itemForm = document.getElementById('itemForm');
         const itemNameInput = document.getElementById('itemName');
-        const itemExpectedCostInput = document.getElementById('itemExpectedCost');
-        const itemActualCostInput = document.getElementById('itemActualCost');
+        const itemCostInput = document.getElementById('itemCost');
         const quickManageCatBtn = document.getElementById('quickManageCatBtn');
         const itemTypeInput = document.getElementById('itemType');
         const itemLinkInput = document.getElementById('itemLink');
         const submitBtn = document.getElementById('submitBtn');
 
+        const editItemForm = document.getElementById('editItemForm');
+        const editItemIdInput = document.getElementById('editItemId');
+        const editItemNameInput = document.getElementById('editItemName');
+        const editItemCostInput = document.getElementById('editItemCost');
+        const editItemTypeInput = document.getElementById('editItemType');
+        const editItemLinkInput = document.getElementById('editItemLink');
+        const cancelEditBtn = document.getElementById('cancelEditBtn');
+        const saveEditBtn = document.getElementById('saveEditBtn');
+
         const searchInput = document.getElementById('searchInput');
+        const filterStatus = document.getElementById('filterStatus');
         const filterType = document.getElementById('filterType');
         const sortBy = document.getElementById('sortBy');
         const itemsTableBody = document.getElementById('itemsTableBody');
@@ -603,17 +594,16 @@
         const sheetsModal = document.getElementById('sheetsModal');
         const closeSheetsModalBtn = document.getElementById('closeSheetsModalBtn');
         const webhookUrlInput = document.getElementById('webhookUrlInput');
-        const syncFromSheetsBtn = document.getElementById('syncFromSheetsBtn');
         const saveWebhookBtn = document.getElementById('saveWebhookBtn');
+        const syncFromSheetsBtn = document.getElementById('syncFromSheetsBtn');
 
         const categoryModal = document.getElementById('categoryModal');
         const closeCategoryModalBtn = document.getElementById('closeCategoryModalBtn');
         const addCategoryForm = document.getElementById('addCategoryForm');
-        const catFormTitle = document.getElementById('catFormTitle');
         const editCategoryIdInput = document.getElementById('editCategoryId');
         const newCategoryName = document.getElementById('newCategoryName');
         const newCategoryColor = document.getElementById('newCategoryColor');
-        const addCatBtn = document.getElementById('addCatBtn');
+        const catFormTitle = document.getElementById('catFormTitle');
         const catSubmitText = document.getElementById('catSubmitText');
         const cancelCatEditBtn = document.getElementById('cancelCatEditBtn');
         const categoryList = document.getElementById('categoryList');
@@ -622,18 +612,8 @@
         const confirmDeleteText = document.getElementById('confirmDeleteText');
         const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
         const executeDeleteBtn = document.getElementById('executeDeleteBtn');
-
-        const editItemModal = document.getElementById('editItemModal');
         const closeEditItemModalBtn = document.getElementById('closeEditItemModalBtn');
-        const editItemForm = document.getElementById('editItemForm');
-        const editItemIdInput = document.getElementById('editItemId');
-        const editItemNameInput = document.getElementById('editItemName');
-        const editItemExpectedCostInput = document.getElementById('editItemExpectedCost');
-        const editItemActualCostInput = document.getElementById('editItemActualCost');
-        const editItemTypeInput = document.getElementById('editItemType');
-        const editItemLinkInput = document.getElementById('editItemLink');
-        const cancelEditBtn = document.getElementById('cancelEditBtn');
-        const saveEditBtn = document.getElementById('saveEditBtn');
+        const editItemModal = document.getElementById('editItemModal');
 
         let items = [];
         let categories = [];
@@ -648,20 +628,23 @@
         let isRegisterMode = false;
         let googleWebhookUrl = localStorage.getItem('googleWebhookUrl') || '';
 
-        const publicDataPath = ['artifacts', appId, 'public', 'data'];
-        const STORAGE_ITEMS_KEY = 'godsvagen_items_data';
-        const STORAGE_CATS_KEY = 'godsvagen_categories_data';
+        const localUserSession = localStorage.getItem('godsvagen_local_user');
+        if (localUserSession) {
+            try {
+                currentUser = JSON.parse(localUserSession);
+                if (currentUser && currentUser.email) {
+                    const isDesignatedAdmin = currentUser.email.toLowerCase() === DESIGNATED_ADMIN_EMAIL.toLowerCase();
+                    currentUserRole = isDesignatedAdmin ? 'admin' : 'user';
+                    currentUserStatus = 'approved';
+                    setTimeout(() => {
+                        updateUIForUserStatus();
+                    }, 50);
+                }
+            } catch (e) {}
+        }
 
         if (webhookUrlInput) {
             webhookUrlInput.value = googleWebhookUrl;
-        }
-
-        if (itemExpectedCostInput && itemActualCostInput) {
-            itemExpectedCostInput.addEventListener('input', () => {
-                if (!itemActualCostInput.value) {
-                    itemActualCostInput.value = itemExpectedCostInput.value;
-                }
-            });
         }
 
         async function fetchFromGoogleSheetsSilently() {
@@ -692,28 +675,26 @@
                             ...item,
                             name: String(item.name ?? ''),
                             type: String(item.type ?? ''),
-                            expectedCost: item.expectedCost !== undefined ? Number(item.expectedCost) : Number(item.cost || 0),
-                            actualCost: item.actualCost !== undefined ? Number(item.actualCost) : Number(item.cost || 0)
+                            cost: item.cost !== undefined ? Number(item.cost) : (item.actualCost !== undefined ? Number(item.actualCost) : Number(item.expectedCost || 0)),
+                            completed: Boolean(item.completed || false)
                         }));
                         localStorage.setItem(STORAGE_ITEMS_KEY, JSON.stringify(items));
                     }
                     render();
                 }
-            } catch (err) {
-                console.warn("Automatisk inläsning från Google Sheets misslyckades:", err);
-            }
+            } catch (err) {}
         }
 
         onAuthStateChanged(auth, async (user) => {
-            currentUser = user;
-
-            if (unsubscribeUsers) unsubscribeUsers();
-            if (unsubscribeItems) unsubscribeItems();
-            if (unsubscribeCategories) unsubscribeCategories();
-
             if (user) {
+                currentUser = user;
+                localStorage.setItem('godsvagen_local_user', JSON.stringify({ uid: user.uid, email: user.email }));
                 if (userEmailDisplay) userEmailDisplay.textContent = user.email || 'användare';
                 
+                if (unsubscribeUsers) unsubscribeUsers();
+                if (unsubscribeItems) unsubscribeItems();
+                if (unsubscribeCategories) unsubscribeCategories();
+
                 const usersRef = collection(db, ...publicDataPath, 'users');
                 unsubscribeUsers = onSnapshot(usersRef, async (snapshot) => {
                     systemUsers = [];
@@ -775,29 +756,39 @@
                     currentUserStatus = 'approved';
                     updateUIForUserStatus();
                 });
-            } else {
-                if (authOverlay) authOverlay.classList.remove('hidden');
-                if (pendingOverlay) pendingOverlay.classList.add('hidden');
-                if (appMainContent) appMainContent.classList.add('hidden');
-                if (headerActions) headerActions.classList.add('hidden');
-                if (syncBadge) {
-                    syncBadge.className = "inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-100 text-amber-800";
-                    syncBadge.innerHTML = `<i class="fa-solid fa-lock text-[10px]"></i> Ej inloggad`;
-                }
+            } else if (!localUserSession) {
+                resetUIForLoggedOut();
             }
         });
 
-        async function handleUserLogout() {
+        function resetUIForLoggedOut() {
+            currentUser = null;
+            currentUserRole = 'user';
+            currentUserStatus = 'pending';
+            localStorage.removeItem('godsvagen_local_user');
+            if (unsubscribeUsers) unsubscribeUsers();
+            if (unsubscribeItems) unsubscribeItems();
+            if (unsubscribeCategories) unsubscribeCategories();
+
+            if (authOverlay) authOverlay.classList.remove('hidden');
+            if (pendingOverlay) pendingOverlay.classList.add('hidden');
+            if (appMainContent) appMainContent.classList.add('hidden');
+            if (headerActions) headerActions.classList.add('hidden');
+            if (syncBadge) {
+                syncBadge.className = "inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-100 text-amber-800";
+                syncBadge.innerHTML = `<i class="fa-solid fa-lock text-[10px]"></i> Ej inloggad`;
+            }
+        }
+
+        async function handleUserLogout(e) {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
             try {
                 await signOut(auth);
-            } catch (err) {
-                // Tvångsrensning om nätverk eller session misslyckas
-                currentUser = null;
-                if (authOverlay) authOverlay.classList.remove('hidden');
-                if (pendingOverlay) pendingOverlay.classList.add('hidden');
-                if (appMainContent) appMainContent.classList.add('hidden');
-                if (headerActions) headerActions.classList.add('hidden');
-            }
+            } catch (err) {}
+            resetUIForLoggedOut();
         }
 
         if (logoutBtn) logoutBtn.addEventListener('click', handleUserLogout);
@@ -806,16 +797,16 @@
         if (tabLogin && tabRegister) {
             tabLogin.addEventListener('click', () => {
                 isRegisterMode = false;
-                tabLogin.className = "w-1/2 py-2 text-xs font-bold text-indigo-600 border-b-2 border-indigo-600 transition-all";
-                tabRegister.className = "w-1/2 py-2 text-xs font-bold text-slate-400 hover:text-slate-600 border-b-2 border-transparent transition-all";
+                tabLogin.className = "w-1/2 py-2 text-xs font-bold text-indigo-600 border-b-2 border-indigo-600 transition-all cursor-pointer";
+                tabRegister.className = "w-1/2 py-2 text-xs font-bold text-slate-400 hover:text-slate-600 border-b-2 border-transparent transition-all cursor-pointer";
                 if (authSubmitText) authSubmitText.textContent = "Logga in";
                 if (authErrorAlert) authErrorAlert.classList.add('hidden');
             });
 
             tabRegister.addEventListener('click', () => {
                 isRegisterMode = true;
-                tabRegister.className = "w-1/2 py-2 text-xs font-bold text-indigo-600 border-b-2 border-indigo-600 transition-all";
-                tabLogin.className = "w-1/2 py-2 text-xs font-bold text-slate-400 hover:text-slate-600 border-b-2 border-transparent transition-all";
+                tabRegister.className = "w-1/2 py-2 text-xs font-bold text-indigo-600 border-b-2 border-indigo-600 transition-all cursor-pointer";
+                tabLogin.className = "w-1/2 py-2 text-xs font-bold text-slate-400 hover:text-slate-600 border-b-2 border-transparent transition-all cursor-pointer";
                 if (authSubmitText) authSubmitText.textContent = "Skapa konto";
                 if (authErrorAlert) authErrorAlert.classList.add('hidden');
             });
@@ -844,6 +835,7 @@
                     currentUser = { uid: 'user_' + btoa(email).replace(/=/g, ''), email: email };
                     currentUserRole = isDesignatedAdmin ? 'admin' : 'user';
                     currentUserStatus = 'approved';
+                    localStorage.setItem('godsvagen_local_user', JSON.stringify(currentUser));
                     if (userEmailDisplay) userEmailDisplay.textContent = email;
                     updateUIForUserStatus();
                     showNotification("Inloggad i demoläge.");
@@ -927,8 +919,8 @@
                                 ...item,
                                 name: String(item.name ?? ''),
                                 type: String(item.type ?? ''),
-                                expectedCost: item.expectedCost !== undefined ? Number(item.expectedCost) : Number(item.cost || 0),
-                                actualCost: item.actualCost !== undefined ? Number(item.actualCost) : Number(item.cost || 0)
+                                cost: item.cost !== undefined ? Number(item.cost) : (item.actualCost !== undefined ? Number(item.actualCost) : Number(item.expectedCost || 0)),
+                                completed: Boolean(item.completed || false)
                             }));
                             localStorage.setItem(STORAGE_ITEMS_KEY, JSON.stringify(items));
                             countMsg.push(`${items.length} poster`);
@@ -963,19 +955,16 @@
                     showNotification('Det finns inga poster att exportera.');
                     return;
                 }
-                let csvContent = "data:text/csv;charset=utf-8,ID,Namn,Förväntad kostnad (SEK),Faktisk kostnad (SEK),Differens (SEK),Kategori,Länk,Skapad Datum\n";
+                let csvContent = "data:text/csv;charset=utf-8,ID,Namn,Kostnad (SEK),Kategori,Länk,Klar,Skapad Datum\n";
                 items.forEach(item => {
-                    const exp = item.expectedCost !== undefined ? item.expectedCost : (item.cost || 0);
-                    const act = item.actualCost !== undefined ? item.actualCost : (item.cost || 0);
-                    const diff = act - exp;
+                    const costVal = item.cost !== undefined ? item.cost : 0;
                     const row = [
                         `"${item.id || ''}"`,
                         `"${(item.name || '').replace(/"/g, '""')}"`,
-                        exp,
-                        act,
-                        diff,
+                        costVal,
                         `"${(item.type || '').replace(/"/g, '""')}"`,
                         `"${(item.link || '').replace(/"/g, '""')}"`,
+                        item.completed ? "Ja" : "Nej",
                         `"${item.createdDate || ''}"`
                     ].join(",");
                     csvContent += row + "\n";
@@ -1010,6 +999,9 @@
                     userProfileBadge.classList.remove('hidden');
                     userProfileBadge.classList.add('flex');
                 }
+                if (userEmailDisplay && currentUser && currentUser.email) {
+                    userEmailDisplay.textContent = currentUser.email;
+                }
 
                 if (currentUserRole === 'admin') {
                     if (openUserMgmtBtn) {
@@ -1036,7 +1028,7 @@
             } else {
                 if (authOverlay) authOverlay.classList.add('hidden');
                 if (pendingOverlay) pendingOverlay.classList.remove('hidden');
-                if (pendingUserEmail) pendingUserEmail.textContent = currentUser.email || 'din e-post';
+                if (pendingUserEmail && currentUser) pendingUserEmail.textContent = currentUser.email || 'din e-post';
                 if (appMainContent) appMainContent.classList.add('hidden');
                 if (headerActions) headerActions.classList.add('hidden');
             }
@@ -1074,15 +1066,15 @@
                 const actionBtns = isMe ? `<span class="text-[11px] text-slate-400 italic">(Du)</span>` : `
                     <div class="flex items-center gap-1.5">
                         ${u.status !== 'approved' ? `
-                            <button onclick="setUserStatus('${u.id}', 'approved')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-semibold px-2.5 py-1 rounded-lg transition-all">
+                            <button type="button" onclick="setUserStatus('${u.id}', 'approved')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-semibold px-2.5 py-1 rounded-lg transition-all cursor-pointer">
                                 Godkänn
                             </button>
                         ` : `
-                            <button onclick="setUserStatus('${u.id}', 'pending')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-semibold px-2 py-1 rounded-lg transition-all">
+                            <button type="button" onclick="setUserStatus('${u.id}', 'pending')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-semibold px-2 py-1 rounded-lg transition-all cursor-pointer">
                                 Återkalla
                             </button>
                         `}
-                        <button onclick="deleteUserRequest('${u.id}')" title="Ta bort" class="text-slate-300 hover:text-rose-600 p-1 rounded-lg">
+                        <button type="button" onclick="deleteUserRequest('${u.id}')" title="Ta bort" class="text-slate-300 hover:text-rose-600 p-1 rounded-lg cursor-pointer">
                             <i class="fa-solid fa-trash-can text-xs"></i>
                         </button>
                     </div>
@@ -1170,10 +1162,10 @@
                         <span class="text-[10px] text-slate-400 font-mono">(${cat.color})</span>
                     </div>
                     <div class="flex items-center gap-1">
-                        <button onclick="editCategory('${cat.id}', '${escapeHtml(cat.name)}', '${cat.color}')" title="Ändra färg / namn" class="text-slate-300 hover:text-indigo-600 p-1 rounded-lg">
+                        <button type="button" onclick="editCategory('${cat.id}', '${escapeHtml(cat.name)}', '${cat.color}')" title="Ändra färg / namn" class="text-slate-300 hover:text-indigo-600 p-1 rounded-lg cursor-pointer">
                             <i class="fa-solid fa-pen-to-square text-xs"></i>
                         </button>
-                        <button onclick="confirmDeleteCategory('${cat.id}', '${escapeHtml(cat.name)}')" title="Ta bort kategori" class="text-slate-300 hover:text-rose-600 p-1 rounded-lg">
+                        <button type="button" onclick="confirmDeleteCategory('${cat.id}', '${escapeHtml(cat.name)}')" title="Ta bort kategori" class="text-slate-300 hover:text-rose-600 p-1 rounded-lg cursor-pointer">
                             <i class="fa-solid fa-trash-can text-xs"></i>
                         </button>
                     </div>
@@ -1261,8 +1253,8 @@
                         ...rawData,
                         name: String(rawData.name ?? ''),
                         type: String(rawData.type ?? ''),
-                        expectedCost: rawData.expectedCost !== undefined ? Number(rawData.expectedCost) : Number(rawData.cost || 0),
-                        actualCost: rawData.actualCost !== undefined ? Number(rawData.actualCost) : Number(rawData.cost || 0)
+                        cost: rawData.cost !== undefined ? Number(rawData.cost) : (rawData.actualCost !== undefined ? Number(rawData.actualCost) : Number(rawData.expectedCost || 0)),
+                        completed: Boolean(rawData.completed || false)
                     });
                 });
                 localStorage.setItem(STORAGE_ITEMS_KEY, JSON.stringify(items));
@@ -1276,8 +1268,8 @@
                             ...i,
                             name: String(i.name ?? ''),
                             type: String(i.type ?? ''),
-                            expectedCost: i.expectedCost !== undefined ? Number(i.expectedCost) : Number(i.cost || 0),
-                            actualCost: i.actualCost !== undefined ? Number(i.actualCost) : Number(i.cost || 0)
+                            cost: i.cost !== undefined ? Number(i.cost) : (i.actualCost !== undefined ? Number(i.actualCost) : Number(i.expectedCost || 0)),
+                            completed: Boolean(i.completed || false)
                         }));
                     } catch (e) { items = []; }
                 }
@@ -1291,8 +1283,7 @@
                 if (!currentUser || currentUserStatus !== 'approved') return;
 
                 const name = itemNameInput.value.trim();
-                const expectedCost = Math.round(parseFloat(itemExpectedCostInput.value)) || 0;
-                const actualCost = Math.round(parseFloat(itemActualCostInput.value)) || 0;
+                const cost = Math.round(parseFloat(itemCostInput.value)) || 0;
                 const type = itemTypeInput.value;
                 const link = itemLinkInput.value.trim();
 
@@ -1305,11 +1296,10 @@
                     const itemData = {
                         id: Date.now().toString(),
                         name: name,
-                        expectedCost: expectedCost,
-                        actualCost: actualCost,
-                        cost: actualCost,
+                        cost: cost,
                         type: type,
                         link: link || null,
+                        completed: false,
                         timestamp: Date.now(),
                         createdDate: new Date().toLocaleDateString('sv-SE', { month: 'short', day: 'numeric', year: 'numeric' }),
                         createdBy: currentUser.email || currentUser.uid
@@ -1343,6 +1333,33 @@
                 }
             });
         }
+
+        window.toggleComplete = async function(id) {
+            if (!currentUser) return;
+            const item = items.find(i => i.id === id);
+            if (!item) return;
+
+            const newStatus = !item.completed;
+            item.completed = newStatus;
+            localStorage.setItem(STORAGE_ITEMS_KEY, JSON.stringify(items));
+            render();
+
+            if (!googleWebhookUrl) {
+                try {
+                    const itemRef = doc(db, ...publicDataPath, 'items', id);
+                    await updateDoc(itemRef, { completed: newStatus });
+                } catch (fsErr) {}
+            } else {
+                try {
+                    fetch(googleWebhookUrl, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ target: 'item', action: 'update', id: id, completed: newStatus })
+                    });
+                } catch (sheetErr) {}
+            }
+        };
 
         window.deleteItem = async function(id) {
             if (!currentUser) return;
@@ -1379,8 +1396,7 @@
 
                 const id = editItemIdInput.value;
                 const name = editItemNameInput.value.trim();
-                const expectedCost = Math.round(parseFloat(editItemExpectedCostInput.value)) || 0;
-                const actualCost = Math.round(parseFloat(editItemActualCostInput.value)) || 0;
+                const cost = Math.round(parseFloat(editItemCostInput.value)) || 0;
                 const type = editItemTypeInput.value;
                 const link = editItemLinkInput.value.trim();
 
@@ -1392,7 +1408,7 @@
                 try {
                     const idx = items.findIndex(i => i.id === id);
                     if (idx !== -1) {
-                        items[idx] = { ...items[idx], name, expectedCost, actualCost, cost: actualCost, type, link: link || null };
+                        items[idx] = { ...items[idx], name, cost, type, link: link || null };
                         localStorage.setItem(STORAGE_ITEMS_KEY, JSON.stringify(items));
                         render();
                     }
@@ -1400,7 +1416,7 @@
                     if (!googleWebhookUrl) {
                         try {
                             const itemRef = doc(db, ...publicDataPath, 'items', id);
-                            await updateDoc(itemRef, { name, expectedCost, actualCost, cost: actualCost, type, link: link || null });
+                            await updateDoc(itemRef, { name, cost, type, link: link || null });
                         } catch (fsErr) {}
                     }
 
@@ -1541,8 +1557,7 @@
 
             editItemIdInput.value = item.id;
             editItemNameInput.value = String(item.name ?? '');
-            editItemExpectedCostInput.value = item.expectedCost !== undefined ? item.expectedCost : (item.cost || 0);
-            editItemActualCostInput.value = item.actualCost !== undefined ? item.actualCost : (item.cost || 0);
+            editItemCostInput.value = item.cost !== undefined ? item.cost : 0;
             editItemTypeInput.value = String(item.type ?? '');
             editItemLinkInput.value = String(item.link ?? '');
 
@@ -1561,51 +1576,31 @@
         }
 
         function updateStats(filteredItems) {
-            const totalExpected = filteredItems.reduce((sum, item) => sum + (item.expectedCost !== undefined ? item.expectedCost : (item.cost || 0)), 0);
-            const totalActual = filteredItems.reduce((sum, item) => sum + (item.actualCost !== undefined ? item.actualCost : (item.cost || 0)), 0);
+            const totalCost = filteredItems.reduce((sum, item) => sum + (item.cost !== undefined ? item.cost : 0), 0);
+            
+            const activeCost = filteredItems.filter(item => !item.completed).reduce((sum, item) => sum + (item.cost !== undefined ? item.cost : 0), 0);
+            const completedCost = filteredItems.filter(item => item.completed).reduce((sum, item) => sum + (item.cost !== undefined ? item.cost : 0), 0);
+
             const totalCount = filteredItems.length;
-            const totalDiff = totalActual - totalExpected;
+            const totalCats = categories.length;
 
-            if (statExpectedCost) statExpectedCost.textContent = formatCurrency(totalExpected);
-            if (statActualCost) statActualCost.textContent = formatCurrency(totalActual);
+            if (statActiveCost) statActiveCost.textContent = formatCurrency(activeCost);
+            if (statCompletedCost) statCompletedCost.textContent = formatCurrency(completedCost);
             if (statTotalItems) statTotalItems.textContent = totalCount;
-
-            if (statDiffCost && statDiffBadge && statDiffLabel) {
-                if (totalDiff === 0) {
-                    statDiffCost.textContent = "0 kr";
-                    statDiffCost.className = "text-2xl font-bold text-slate-900 mt-1";
-                    statDiffLabel.textContent = "Exakt på förväntat";
-                    statDiffBadge.className = "w-12 h-12 bg-slate-100 text-slate-600 rounded-xl flex items-center justify-center text-xl";
-                    statDiffBadge.innerHTML = `<i class="fa-solid fa-scale-balanced"></i>`;
-                } else if (totalDiff > 0) {
-                    statDiffCost.textContent = `+${formatCurrency(totalDiff)}`;
-                    statDiffCost.className = "text-2xl font-bold text-rose-600 mt-1";
-                    statDiffLabel.textContent = "Högre än förväntat";
-                    statDiffBadge.className = "w-12 h-12 bg-rose-50 text-rose-600 rounded-xl flex items-center justify-center text-xl";
-                    statDiffBadge.innerHTML = `<i class="fa-solid fa-arrow-up text-rose-600"></i>`;
-                } else {
-                    statDiffCost.textContent = formatCurrency(totalDiff);
-                    statDiffCost.className = "text-2xl font-bold text-emerald-600 mt-1";
-                    statDiffLabel.textContent = "Lägre än förväntat (Sparat)";
-                    statDiffBadge.className = "w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center text-xl";
-                    statDiffBadge.innerHTML = `<i class="fa-solid fa-arrow-down text-emerald-600"></i>`;
-                }
-            }
+            if (statTotalCats) statTotalCats.textContent = totalCats + ' st';
 
             const categoryStats = {};
             categories.forEach(cat => {
-                categoryStats[cat.name] = { expected: 0, actual: 0, count: 0, color: cat.color };
+                categoryStats[cat.name] = { cost: 0, count: 0, color: cat.color };
             });
 
             filteredItems.forEach(item => {
                 const catName = item.type || 'Allmänt';
                 if (!categoryStats[catName]) {
-                    categoryStats[catName] = { expected: 0, actual: 0, count: 0, color: 'slate' };
+                    categoryStats[catName] = { cost: 0, count: 0, color: 'slate' };
                 }
-                const exp = item.expectedCost !== undefined ? item.expectedCost : (item.cost || 0);
-                const act = item.actualCost !== undefined ? item.actualCost : (item.cost || 0);
-                categoryStats[catName].expected += exp;
-                categoryStats[catName].actual += act;
+                const costVal = item.cost !== undefined ? item.cost : 0;
+                categoryStats[catName].cost += costVal;
                 categoryStats[catName].count += 1;
             });
 
@@ -1617,13 +1612,6 @@
                 } else {
                     catEntries.forEach(([catName, data]) => {
                         const badgeClass = colorStyles[data.color] || colorStyles['slate'];
-                        const diff = data.actual - data.expected;
-                        const diffTag = diff > 0 
-                            ? `<span class="text-[10px] font-bold text-rose-600">(+${formatCurrency(diff)})</span>`
-                            : diff < 0 
-                            ? `<span class="text-[10px] font-bold text-emerald-600">(${formatCurrency(diff)})</span>`
-                            : `<span class="text-[10px] text-slate-400">(±0)</span>`;
-
                         const div = document.createElement('div');
                         div.className = 'p-3 rounded-xl bg-slate-50 border border-slate-100 text-xs space-y-1.5';
                         div.innerHTML = `
@@ -1634,12 +1622,8 @@
                                 <span class="text-slate-400 text-[11px] font-semibold">${data.count} st</span>
                             </div>
                             <div class="flex items-center justify-between pt-1 border-t border-slate-200/60 text-[11px]">
-                                <span class="text-slate-500">Förväntad:</span>
-                                <span class="font-medium text-slate-700">${formatCurrency(data.expected)}</span>
-                            </div>
-                            <div class="flex items-center justify-between text-[11px]">
-                                <span class="text-slate-500">Faktisk:</span>
-                                <span class="font-bold text-slate-900">${formatCurrency(data.actual)} ${diffTag}</span>
+                                <span class="text-slate-500">Total kostnad:</span>
+                                <span class="font-bold text-slate-900">${formatCurrency(data.cost)}</span>
                             </div>
                         `;
                         categorySummaryList.appendChild(div);
@@ -1649,8 +1633,9 @@
         }
 
         function render() {
-            if (!searchInput || !filterType || !sortBy || !itemsTableBody) return;
+            if (!searchInput || !filterStatus || !filterType || !sortBy || !itemsTableBody) return;
             const queryText = searchInput.value.toLowerCase().trim();
+            const statusMode = filterStatus.value;
             const selectedType = filterType.value;
             const sortMode = sortBy.value;
 
@@ -1659,18 +1644,23 @@
                 const itemType = String(item.type ?? '');
                 const matchesName = itemName.toLowerCase().includes(queryText);
                 const matchesType = selectedType === 'ALL' || itemType === selectedType;
-                return matchesName && matchesType;
+                
+                let matchesStatus = true;
+                if (statusMode === 'active') {
+                    matchesStatus = !item.completed;
+                } else if (statusMode === 'completed') {
+                    matchesStatus = Boolean(item.completed);
+                }
+
+                return matchesName && matchesType && matchesStatus;
             });
 
             filtered.sort((a, b) => {
-                const aExp = a.expectedCost !== undefined ? a.expectedCost : (a.cost || 0);
-                const bExp = b.expectedCost !== undefined ? b.expectedCost : (b.cost || 0);
-                const aAct = a.actualCost !== undefined ? a.actualCost : (a.cost || 0);
-                const bAct = b.actualCost !== undefined ? b.actualCost : (b.cost || 0);
+                const aCost = a.cost !== undefined ? a.cost : 0;
+                const bCost = b.cost !== undefined ? b.cost : 0;
 
-                if (sortMode === 'actual-desc') return bAct - aAct;
-                if (sortMode === 'actual-asc') return aAct - bAct;
-                if (sortMode === 'expected-desc') return bExp - aExp;
+                if (sortMode === 'actual-desc') return bCost - aCost;
+                if (sortMode === 'actual-asc') return aCost - bCost;
                 if (sortMode === 'date-asc') return (a.timestamp || 0) - (b.timestamp || 0);
                 return (b.timestamp || 0) - (a.timestamp || 0);
             });
@@ -1684,46 +1674,39 @@
                 if (emptyState) emptyState.classList.add('hidden');
                 filtered.forEach(item => {
                     const tr = document.createElement('tr');
-                    tr.className = 'hover:bg-slate-50/70 transition-colors group';
+                    const isCompleted = Boolean(item.completed);
+                    tr.className = `transition-colors group ${isCompleted ? 'bg-slate-100/60 text-slate-400' : 'hover:bg-slate-50/70 text-slate-800'}`;
                     
                     const matchedCat = categories.find(c => c.name === item.type);
                     const colorKey = matchedCat ? matchedCat.color : 'slate';
                     const badgeClass = colorStyles[colorKey] || colorStyles['slate'];
 
-                    const exp = item.expectedCost !== undefined ? item.expectedCost : (item.cost || 0);
-                    const act = item.actualCost !== undefined ? item.actualCost : (item.cost || 0);
-                    const diff = act - exp;
-
-                    let diffCell = `<span class="text-slate-400 font-semibold">0 kr</span>`;
-                    if (diff > 0) {
-                        diffCell = `<span class="text-rose-600 font-bold">+${formatCurrency(diff)}</span>`;
-                    } else if (diff < 0) {
-                        diffCell = `<span class="text-emerald-600 font-bold">${formatCurrency(diff)}</span>`;
-                    }
-
+                    const costVal = item.cost !== undefined ? item.cost : 0;
                     const linkCell = item.link 
                         ? `<a href="${escapeHtml(item.link)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-xs text-indigo-600 hover:text-indigo-800 font-medium hover:underline"><i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Länk</a>`
                         : `<span class="text-slate-300 text-xs">—</span>`;
 
                     tr.innerHTML = `
-                        <td class="py-3.5 px-3 font-semibold text-slate-800">${escapeHtml(item.name || '')}</td>
+                        <td class="py-3.5 px-3 text-center">
+                            <input type="checkbox" ${isCompleted ? 'checked' : ''} onchange="toggleComplete('${item.id}')" title="Markera som klar"
+                                class="w-4 h-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 cursor-pointer">
+                        </td>
+                        <td class="py-3.5 px-3 font-semibold ${isCompleted ? 'line-through text-slate-400' : 'text-slate-800'}">${escapeHtml(item.name || '')}</td>
                         <td class="py-3.5 px-3">
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${badgeClass}">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${badgeClass} ${isCompleted ? 'opacity-70' : ''}">
                                 ${escapeHtml(item.type || 'Allmänt')}
                             </span>
                         </td>
                         <td class="py-3.5 px-3">${linkCell}</td>
-                        <td class="py-3.5 px-3 text-right text-slate-600 font-medium">${formatCurrency(exp)}</td>
-                        <td class="py-3.5 px-3 text-right font-bold text-slate-900">${formatCurrency(act)}</td>
-                        <td class="py-3.5 px-3 text-right text-xs">${diffCell}</td>
+                        <td class="py-3.5 px-3 text-right ${isCompleted ? 'text-slate-400' : 'font-bold text-slate-900'}">${formatCurrency(costVal)}</td>
                         <td class="py-3.5 px-3 text-center">
                             <div class="flex items-center justify-center gap-1">
-                                <button onclick="openEditModal('${item.id}')" title="Redigera post" 
-                                    class="text-slate-300 hover:text-indigo-600 p-1.5 rounded-lg hover:bg-indigo-50 transition-colors">
+                                <button type="button" onclick="openEditModal('${item.id}')" title="Redigera post" 
+                                    class="text-slate-300 hover:text-indigo-600 p-1.5 rounded-lg hover:bg-indigo-50 transition-colors cursor-pointer">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                 </button>
-                                <button onclick="deleteItem('${item.id}')" title="Ta bort post" 
-                                    class="text-slate-300 hover:text-rose-600 p-1.5 rounded-lg hover:bg-rose-50 transition-colors">
+                                <button type="button" onclick="deleteItem('${item.id}')" title="Ta bort post" 
+                                    class="text-slate-300 hover:text-rose-600 p-1.5 rounded-lg hover:bg-rose-50 transition-colors cursor-pointer">
                                     <i class="fa-solid fa-trash-can"></i>
                                 </button>
                             </div>
@@ -1747,6 +1730,7 @@
         }
 
         if (searchInput) searchInput.addEventListener('input', render);
+        if (filterStatus) filterStatus.addEventListener('change', render);
         if (filterType) filterType.addEventListener('change', render);
         if (sortBy) sortBy.addEventListener('change', render);
     </script>
