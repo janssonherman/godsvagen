@@ -19,22 +19,19 @@
 <body class="bg-stone-100 text-stone-800 min-h-screen pb-12">
 
     <header id="appHeader" class="hidden bg-white border-b border-stone-200 shadow-sm">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col sm:flex-row items-center justify-between gap-3">
-        <div class="flex items-center space-x-3 w-full sm:w-auto justify-between sm:justify-start">
-            <div class="flex items-center space-x-3">
-                <div class="w-11 h-11 rounded-2xl overflow-hidden shadow-md flex items-center justify-center border border-amber-950/20 bg-stone-100 shrink-0">
-                    <img src="/images/house.png" onerror="this.src='https://placehold.co/100x100/e7e5e4/44403c?text=Hus'" alt="Huset" class="w-full h-full object-cover">
-                </div>
-                <div>
-                    <h1 class="text-xl font-bold text-stone-900 tracking-tight">Godsvägen</h1>
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div class="flex items-center space-x-3 w-full sm:w-auto justify-between sm:justify-start">
+                <div class="flex items-center space-x-3">
+                    <div class="w-11 h-11 rounded-2xl overflow-hidden shadow-md flex items-center justify-center border border-amber-950/20 bg-stone-100 shrink-0">
+                        <img src="/images/house.png" onerror="this.src='https://placehold.co/100x100/e7e5e4/44403c?text=Hus'" alt="Huset" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-stone-900 tracking-tight">Godsvägen</h1>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div id="headerActions" class="hidden flex-wrap items-center gap-2 w-full sm:w-auto justify-end">
-                <button id="openUserMgmtBtn" class="hidden bg-amber-50 hover:bg-amber-100 text-amber-900 text-xs font-semibold py-2 px-3 rounded-xl border border-amber-200 transition-all items-center gap-1.5 cursor-pointer">
-                    <i class="fa-solid fa-users-gear text-amber-800"></i> Användare <span id="pendingCountBadge" class="hidden bg-amber-700 text-white text-[10px] px-1.5 py-0.5 rounded-full font-bold">0</span>
-                </button>
+            <div id="headerActions" class="hidden flex-wrap items-center gap-2 w-full sm:w-auto justify-end">
                 <button id="exportCsvBtn" title="Ladda ner CSV för Google Sheets" class="hidden bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-semibold py-2 px-3 rounded-xl border border-emerald-200 transition-all items-center gap-1.5 cursor-pointer">
                     <i class="fa-solid fa-file-excel text-emerald-700"></i> Exportera CSV
                 </button>
@@ -52,30 +49,26 @@
     </header>
 
     <div id="authOverlay" class="max-w-md mx-auto my-12 px-4">
-    <div class="bg-white rounded-3xl shadow-xl border border-stone-200/80 p-6 sm:p-8 space-y-6">
-        <div class="text-center space-y-2">
-            <div class="w-20 h-20 rounded-2xl overflow-hidden mx-auto shadow-inner border border-amber-100 bg-stone-100 flex items-center justify-center">
-                <img src="/images/house.png" onerror="this.src='https://placehold.co/150x150/e7e5e4/44403c?text=Hus'" alt="Huset" class="w-full h-full object-cover">
+        <div class="bg-white rounded-3xl shadow-xl border border-stone-200/80 p-6 sm:p-8 space-y-6">
+            <div class="text-center space-y-2">
+                <div class="w-20 h-20 rounded-2xl overflow-hidden mx-auto shadow-inner border border-amber-100 bg-stone-100 flex items-center justify-center">
+                    <img src="/images/house.png" onerror="this.src='https://placehold.co/150x150/e7e5e4/44403c?text=Hus'" alt="Huset" class="w-full h-full object-cover">
+                </div>
+                <h2 class="text-2xl font-bold text-stone-900">Välkommen till Godsvägen</h2>
+                <p class="text-xs text-stone-500">Logga in för att fortsätta</p>
             </div>
-            <h2 class="text-2xl font-bold text-stone-900">Välkommen till Godsvägen</h2>
-        </div>
 
-        <div id="authErrorAlert" class="hidden p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs flex items-center gap-2">
+            <div id="authErrorAlert" class="hidden p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs flex items-center gap-2">
                 <i class="fa-solid fa-circle-exclamation text-rose-600 shrink-0"></i>
                 <span id="authErrorText">Ett fel uppstod vid inloggningen.</span>
             </div>
 
-            <div class="flex border-b border-stone-200">
-                <button id="tabLogin" type="button" class="w-1/2 py-2 text-xs font-bold text-amber-900 border-b-2 border-amber-800 transition-all cursor-pointer">Logga in</button>
-                <button id="tabRegister" type="button" class="w-1/2 py-2 text-xs font-bold text-stone-400 hover:text-stone-600 border-b-2 border-transparent transition-all cursor-pointer">Skapa konto</button>
-            </div>
-
             <form id="emailAuthForm" class="space-y-4">
                 <div>
-                    <label for="authEmail" class="block text-xs font-semibold text-stone-600 mb-1">Användarnamn</label>
+                    <label for="authUsername" class="block text-xs font-semibold text-stone-600 mb-1">Användarnamn</label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-stone-400 text-xs"><i class="fa-solid fa-user"></i></span>
-                        <input type="text" id="authEmail" required placeholder="Användarnamn" data-lpignore="true" autocomplete="username"
+                        <input type="text" id="authUsername" required placeholder="Användarnamn" data-lpignore="true" autocomplete="username"
                             class="w-full pl-9 pr-3.5 py-2.5 text-sm bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-800/20 focus:border-amber-800 transition-all">
                     </div>
                 </div>
@@ -84,7 +77,7 @@
                     <label for="authPassword" class="block text-xs font-semibold text-stone-600 mb-1">Lösenord</label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-stone-400 text-xs"><i class="fa-solid fa-key"></i></span>
-                        <input type="password" id="authPassword" required minlength="6" placeholder="••••••••" data-lpignore="true" autocomplete="current-password"
+                        <input type="password" id="authPassword" required placeholder="••••••••" data-lpignore="true" autocomplete="current-password"
                             class="w-full pl-9 pr-3.5 py-2.5 text-sm bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-800/20 focus:border-amber-800 transition-all">
                     </div>
                 </div>
@@ -94,46 +87,6 @@
                     <i class="fa-solid fa-right-to-bracket"></i> <span id="authSubmitText">Logga in</span>
                 </button>
             </form>
-        </div>
-    </div>
-
-    <div id="pendingOverlay" class="hidden max-w-md mx-auto my-12 px-4">
-        <div class="bg-white rounded-3xl shadow-xl border border-amber-200 p-6 sm:p-8 space-y-6 text-center">
-            <div class="w-16 h-16 bg-amber-50 text-amber-900 rounded-2xl flex items-center justify-center mx-auto text-2xl shadow-inner">
-                <i class="fa-solid fa-clock-rotate-left"></i>
-            </div>
-            <div class="space-y-2">
-                <h2 class="text-2xl font-bold text-stone-900">Åtkomst kräver godkännande</h2>
-                <p class="text-xs text-stone-600 leading-relaxed">
-                    Ditt konto (<strong id="pendingUserEmail"></strong>) har registrerats och väntar på godkännande från administratören.
-                </p>
-                <p class="text-[11px] text-stone-400">När kontot godkänns får du automatiskt tillgång till den gemensamma datan.</p>
-            </div>
-            <button id="pendingLogoutBtn" type="button" class="w-full bg-stone-100 hover:bg-stone-200 text-stone-700 font-semibold py-2.5 px-4 rounded-xl text-xs transition-all flex items-center justify-center gap-2 cursor-pointer">
-                <i class="fa-solid fa-right-from-bracket"></i> Logga ut
-            </button>
-        </div>
-    </div>
-
-    <div id="userMgmtModal" class="hidden fixed inset-0 z-50 bg-stone-900/40 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg border border-stone-200 overflow-hidden">
-            <div class="p-5 border-b border-stone-100 flex items-center justify-between bg-stone-50/50">
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-users-gear text-amber-900"></i>
-                    <h3 class="font-bold text-stone-900">Hantera användare & åtkomst</h3>
-                </div>
-                <button id="closeUserMgmtModalBtn" type="button" class="text-stone-400 hover:text-stone-600 p-1 rounded-lg cursor-pointer">
-                    <i class="fa-solid fa-xmark text-lg"></i>
-                </button>
-            </div>
-            <div class="p-5 space-y-4 max-h-[70vh] overflow-y-auto">
-                <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900">
-                    <p class="font-semibold"><i class="fa-solid fa-shield-halved"></i> Administratörsläge</p>
-                    <p class="text-[11px] mt-0.5">Godkänn eller neka användare som begär tillgång till den gemensamma datan.</p>
-                </div>
-                <ul id="userMgmtList" class="divide-y divide-stone-100 border border-stone-100 rounded-xl overflow-hidden text-xs">
-                </ul>
-            </div>
         </div>
     </div>
 
@@ -149,7 +102,6 @@
             </button>
         </div>
 
-        <!-- Layout: Add Item Form on Top -->
         <section class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200/80">
             <h2 class="text-lg font-bold text-stone-900 mb-4 flex items-center gap-2">
                 <i class="fa-solid fa-plus-circle text-amber-900"></i> Lägg till ny post
@@ -189,15 +141,14 @@
                 </div>
 
                 <div class="lg:col-span-4 pt-2">
-                    <button type="submit" id="submitBtn" disabled
-                        class="w-full bg-amber-900 hover:bg-amber-950 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-3 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 text-sm cursor-pointer">
+                    <button type="submit" id="submitBtn"
+                        class="w-full bg-amber-900 hover:bg-amber-950 text-white font-semibold py-3 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 text-sm cursor-pointer">
                         Lägg till
                     </button>
                 </div>
             </form>
         </section>
 
-        <!-- Dynamic Statistics Row -->
         <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <div class="bg-white p-5 rounded-2xl shadow-sm border border-stone-200/80 flex items-center justify-between">
                 <div>
@@ -230,7 +181,6 @@
             </div>
         </section>
 
-        <!-- Category Summary breakdown card -->
         <section class="bg-white p-5 rounded-2xl shadow-sm border border-stone-200/80">
             <p class="text-xs font-semibold uppercase tracking-wider text-stone-400 mb-3">Sammanfattning per kategori</p>
             <div id="categorySummaryList" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
@@ -238,7 +188,6 @@
             </div>
         </section>
 
-        <!-- Items Data Table Section -->
         <section class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200/80">
             <div class="flex flex-col md:flex-row gap-3 mb-6 items-center justify-between">
                 <div class="relative w-full md:w-64">
@@ -299,7 +248,6 @@
         </section>
     </main>
 
-    <!-- Google Sheets Integration Modal -->
     <div id="sheetsModal" class="hidden fixed inset-0 z-50 bg-stone-900/40 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-xl w-full max-w-xl border border-stone-200 overflow-hidden">
             <div class="p-5 border-b border-stone-100 flex items-center justify-between bg-stone-50/50">
@@ -340,7 +288,6 @@
         </div>
     </div>
 
-    <!-- Category Management Modal -->
     <div id="categoryModal" class="hidden fixed inset-0 z-50 bg-stone-900/40 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-xl w-full max-w-md border border-stone-200 overflow-hidden transform transition-all">
             <div class="p-5 border-b border-stone-100 flex items-center justify-between bg-stone-50/50">
@@ -390,7 +337,6 @@
         </div>
     </div>
 
-    <!-- Confirmation Modal -->
     <div id="confirmDeleteModal" class="hidden fixed inset-0 z-50 bg-stone-900/40 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-xl w-full max-w-sm p-5 border border-stone-200 text-center space-y-4">
             <div class="w-12 h-12 bg-rose-50 text-rose-600 rounded-full flex items-center justify-center mx-auto text-xl">
@@ -407,7 +353,6 @@
         </div>
     </div>
 
-    <!-- Edit Item Modal -->
     <div id="editItemModal" class="hidden fixed inset-0 z-50 bg-stone-900/40 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-xl w-full max-w-md border border-stone-200 overflow-hidden transform transition-all">
             <div class="p-5 border-b border-stone-100 flex items-center justify-between bg-stone-50/50">
@@ -466,7 +411,6 @@
             getAuth, 
             onAuthStateChanged,
             signInWithEmailAndPassword,
-            createUserWithEmailAndPassword,
             signOut,
             setPersistence,
             browserLocalPersistence
@@ -478,7 +422,6 @@
             deleteDoc,
             updateDoc, 
             doc, 
-            setDoc,
             onSnapshot
         } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
@@ -499,7 +442,6 @@
 
         const db = getFirestore(app);
 
-        const DESIGNATED_ADMIN_EMAIL = 'herman.soderbrandt@gmail.com';
         const STORAGE_ITEMS_KEY = 'godsvagen_local_items_' + appId;
         const STORAGE_CATS_KEY = 'godsvagen_local_cats_' + appId;
         const publicDataPath = ['artifacts', appId, 'public', 'data'];
@@ -521,8 +463,6 @@
         };
 
         const headerActions = document.getElementById('headerActions');
-        const openUserMgmtBtn = document.getElementById('openUserMgmtBtn');
-        const pendingCountBadge = document.getElementById('pendingCountBadge');
         const exportCsvBtn = document.getElementById('exportCsvBtn');
         const openSheetsModalBtn = document.getElementById('openSheetsModalBtn');
         const openCategoryModalBtn = document.getElementById('openCategoryModalBtn');
@@ -531,21 +471,11 @@
         const authOverlay = document.getElementById('authOverlay');
         const authErrorAlert = document.getElementById('authErrorAlert');
         const authErrorText = document.getElementById('authErrorText');
-        const tabLogin = document.getElementById('tabLogin');
-        const tabRegister = document.getElementById('tabRegister');
         const emailAuthForm = document.getElementById('emailAuthForm');
-        const authEmailInput = document.getElementById('authEmail');
+        const authUsernameInput = document.getElementById('authUsername');
         const authPasswordInput = document.getElementById('authPassword');
         const authSubmitBtn = document.getElementById('authSubmitBtn');
         const authSubmitText = document.getElementById('authSubmitText');
-
-        const pendingOverlay = document.getElementById('pendingOverlay');
-        const pendingUserEmail = document.getElementById('pendingUserEmail');
-        const pendingLogoutBtn = document.getElementById('pendingLogoutBtn');
-
-        const userMgmtModal = document.getElementById('userMgmtModal');
-        const closeUserMgmtModalBtn = document.getElementById('closeUserMgmtModalBtn');
-        const userMgmtList = document.getElementById('userMgmtList');
 
         const appMainContent = document.getElementById('appMainContent');
         const cloudAlert = document.getElementById('cloudAlert');
@@ -607,15 +537,10 @@
 
         let items = [];
         let categories = [];
-        let systemUsers = [];
         let currentUser = null;
-        let currentUserRole = 'user'; 
-        let currentUserStatus = 'pending'; 
         let unsubscribeItems = null;
         let unsubscribeCategories = null;
-        let unsubscribeUsers = null;
         let pendingDeleteCategoryId = null;
-        let isRegisterMode = false;
         
         let googleWebhookUrl = 'https://script.google.com/macros/s/AKfycbzSPgY2-qHidL9H-xrrOkCZZUNT7qsfmU_x9TyPCm3h7SkI9Cy8HO3_Nfo1LLCr4B4O/exec' || localStorage.getItem('googleWebhookUrl') || 'https://script.google.com/macros/s/AKfycbzSPgY2-qHidL9H-xrrOkCZZUNT7qsfmU_x9TyPCm3h7SkI9Cy8HO3_Nfo1LLCr4B4O/exec';
 
@@ -623,10 +548,7 @@
         if (localUserSession) {
             try {
                 currentUser = JSON.parse(localUserSession);
-                if (currentUser && currentUser.email) {
-                    const isDesignatedAdmin = currentUser.email.toLowerCase() === DESIGNATED_ADMIN_EMAIL.toLowerCase();
-                    currentUserRole = isDesignatedAdmin ? 'admin' : 'user';
-                    currentUserStatus = 'approved';
+                if (currentUser) {
                     setTimeout(() => {
                         updateUIForUserStatus();
                     }, 50);
@@ -676,53 +598,11 @@
             } catch (err) {}
         }
 
-        const usersRef = collection(db, publicDataPath[0], publicDataPath[1], publicDataPath[2], publicDataPath[3], 'users');
-
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 currentUser = user;
                 localStorage.setItem('godsvagen_local_user', JSON.stringify(currentUser));
-                
-                if (unsubscribeUsers) unsubscribeUsers();
-                
-                unsubscribeUsers = onSnapshot(usersRef, async (snapshot) => {
-                    systemUsers = [];
-                    let myUserDoc = null;
-                    snapshot.forEach(docSnap => {
-                        const d = { id: docSnap.id, ...docSnap.data() };
-                        systemUsers.push(d);
-                        if (d.uid === user.uid || (d.email && d.email.toLowerCase() === (user.email || '').toLowerCase())) {
-                            myUserDoc = d;
-                        }
-                    });
-
-                    const isDesignatedAdmin = (user.email || '').toLowerCase() === DESIGNATED_ADMIN_EMAIL.toLowerCase();
-
-                    if (myUserDoc) {
-                        currentUserRole = isDesignatedAdmin ? 'admin' : (myUserDoc.role || 'user');
-                        currentUserStatus = isDesignatedAdmin ? 'approved' : (myUserDoc.status || 'pending');
-                    } else {
-                        currentUserRole = isDesignatedAdmin ? 'admin' : 'user';
-                        currentUserStatus = isDesignatedAdmin ? 'approved' : 'pending';
-                        try {
-                            const newDocRef = doc(usersRef);
-                            await setDoc(newDocRef, {
-                                uid: user.uid,
-                                email: user.email,
-                                role: currentUserRole,
-                                status: currentUserStatus,
-                                timestamp: Date.now()
-                            });
-                        } catch (e) {}
-                    }
-
-                    updateUIForUserStatus();
-                }, (error) => {
-                    const isDesignatedAdmin = (user.email || '').toLowerCase() === DESIGNATED_ADMIN_EMAIL.toLowerCase();
-                    currentUserRole = isDesignatedAdmin ? 'admin' : 'user';
-                    currentUserStatus = isDesignatedAdmin ? 'approved' : 'pending';
-                    updateUIForUserStatus();
-                });
+                updateUIForUserStatus();
             } else if (!localUserSession) {
                 resetUIForLoggedOut();
             }
@@ -730,15 +610,11 @@
 
         function resetUIForLoggedOut() {
             currentUser = null;
-            currentUserRole = 'user';
-            currentUserStatus = 'pending';
             localStorage.removeItem('godsvagen_local_user');
-            if (unsubscribeUsers) unsubscribeUsers();
             if (unsubscribeItems) unsubscribeItems();
             if (unsubscribeCategories) unsubscribeCategories();
 
             if (authOverlay) authOverlay.classList.remove('hidden');
-            if (pendingOverlay) pendingOverlay.classList.add('hidden');
             if (appMainContent) appMainContent.classList.add('hidden');
             const appHeader = document.getElementById('appHeader');
             if (appHeader) appHeader.classList.add('hidden');
@@ -757,30 +633,11 @@
         }
 
         if (logoutBtn) logoutBtn.addEventListener('click', handleUserLogout);
-        if (pendingLogoutBtn) pendingLogoutBtn.addEventListener('click', handleUserLogout);
-
-        if (tabLogin && tabRegister) {
-            tabLogin.addEventListener('click', () => {
-                isRegisterMode = false;
-                tabLogin.className = "w-1/2 py-2 text-xs font-bold text-amber-900 border-b-2 border-amber-800 transition-all cursor-pointer";
-                tabRegister.className = "w-1/2 py-2 text-xs font-bold text-stone-400 hover:text-stone-600 border-b-2 border-transparent transition-all cursor-pointer";
-                if (authSubmitText) authSubmitText.textContent = "Logga in";
-                if (authErrorAlert) authErrorAlert.classList.add('hidden');
-            });
-
-            tabRegister.addEventListener('click', () => {
-                isRegisterMode = true;
-                tabRegister.className = "w-1/2 py-2 text-xs font-bold text-amber-900 border-b-2 border-amber-800 transition-all cursor-pointer";
-                tabLogin.className = "w-1/2 py-2 text-xs font-bold text-stone-400 hover:text-stone-600 border-b-2 border-transparent transition-all cursor-pointer";
-                if (authSubmitText) authSubmitText.textContent = "Skapa";
-                if (authErrorAlert) authErrorAlert.classList.add('hidden');
-            });
-        }
 
         if (emailAuthForm) {
             emailAuthForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
-                const usernameInputVal = authEmailInput.value.trim();
+                const usernameInputVal = authUsernameInput.value.trim();
                 const password = authPasswordInput.value;
 
                 if (!usernameInputVal || !password) return;
@@ -788,48 +645,21 @@
                 const email = getEmailFromUsername(usernameInputVal);
 
                 authSubmitBtn.disabled = true;
-                authSubmitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Behandlar...`;
+                authSubmitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Loggar in...`;
                 if (authErrorAlert) authErrorAlert.classList.add('hidden');
 
                 try {
-                    if (isRegisterMode) {
-                        try {
-                            await createUserWithEmailAndPassword(auth, email, password);
-                            showNotification('Konto skapat! Väntar på att godkännas av administratör.');
-                        } catch (regErr) {
-                            if (authErrorText) authErrorText.textContent = "Kunde inte skapa konto. Användarnamnet kanske redan finns eller lösenordet är för kort (minst 6 tecken).";
-                            if (authErrorAlert) authErrorAlert.classList.remove('hidden');
-                            return;
-                        }
-                    } else {
-                        try {
-                            await signInWithEmailAndPassword(auth, email, password);
-                        } catch (loginErr) {
-                            if (authErrorText) authErrorText.textContent = "Inloggningen misslyckades. Kontrollera användarnamn och lösenord, eller skapa ett konto om du saknar ett.";
-                            if (authErrorAlert) authErrorAlert.classList.remove('hidden');
-                            return;
-                        }
-                    }
-                } catch (err) {
-                    if (authErrorText) authErrorText.textContent = "Ett fel uppstod.";
+                    await signInWithEmailAndPassword(auth, email, password);
+                } catch (loginErr) {
+                    if (authErrorText) authErrorText.textContent = "Inloggningen misslyckades. Kontrollera användarnamn och lösenord.";
                     if (authErrorAlert) authErrorAlert.classList.remove('hidden');
                 } finally {
                     authSubmitBtn.disabled = false;
-                    authSubmitBtn.innerHTML = `<i class="fa-solid fa-right-to-bracket"></i> <span id="authSubmitText">${isRegisterMode ? 'Skapa' : 'Logga in'}</span>`;
+                    authSubmitBtn.innerHTML = `<i class="fa-solid fa-right-to-bracket"></i> <span id="authSubmitText">Logga in</span>`;
                 }
             });
         }
 
-        if (openUserMgmtBtn) {
-            openUserMgmtBtn.addEventListener('click', () => {
-                if (userMgmtModal) userMgmtModal.classList.remove('hidden');
-                renderUserMgmtList();
-            });
-        }
-
-        if (closeUserMgmtModalBtn && userMgmtModal) {
-            closeUserMgmtModalBtn.addEventListener('click', () => userMgmtModal.classList.add('hidden'));
-        }
         if (openSheetsModalBtn && sheetsModal) {
             openSheetsModalBtn.addEventListener('click', () => sheetsModal.classList.remove('hidden'));
         }
@@ -961,107 +791,24 @@
         }
 
         function updateUIForUserStatus() {
-            if (currentUserStatus === 'approved' || currentUserRole === 'admin') {
-                if (authOverlay) authOverlay.classList.add('hidden');
-                if (pendingOverlay) pendingOverlay.classList.add('hidden');
-                if (appMainContent) appMainContent.classList.remove('hidden');
-                const appHeader = document.getElementById('appHeader');
-                if (appHeader) appHeader.classList.remove('hidden');
-                if (headerActions) {
-                    headerActions.classList.remove('hidden');
-                    headerActions.classList.add('flex');
-                }
-
-                if (currentUserRole === 'admin') {
-                    if (openUserMgmtBtn) {
-                        openUserMgmtBtn.classList.remove('hidden');
-                        openUserMgmtBtn.classList.add('flex');
-                    }
-                    renderUserMgmtList();
-                } else if (openUserMgmtBtn) {
-                    openUserMgmtBtn.classList.add('hidden');
-                }
-
-                if (submitBtn) submitBtn.disabled = false;
-
-                setupSharedCategoriesListener();
-                setupSharedItemsListener();
-
-                if (googleWebhookUrl) {
-                    fetchFromGoogleSheetsSilently();
-                }
-            } else {
-                if (authOverlay) authOverlay.classList.add('hidden');
-                if (pendingOverlay) pendingOverlay.classList.remove('hidden');
-                const appHeader = document.getElementById('appHeader');
-                if (appHeader) appHeader.classList.add('hidden');
-                if (pendingUserEmail && currentUser) pendingUserEmail.textContent = currentUser.email ? currentUser.email.split('@')[0] : 'användarnamn';
-                if (appMainContent) appMainContent.classList.add('hidden');
-                if (headerActions) headerActions.classList.add('hidden');
-            }
-        }
-
-        function renderUserMgmtList() {
-            if (!userMgmtList) return;
-            userMgmtList.innerHTML = '';
-            
-            if (systemUsers.length === 0) {
-                userMgmtList.innerHTML = '<li class="p-3 text-stone-400 text-xs text-center bg-white">Inga användare registrerade ännu.</li>';
-                return;
+            if (authOverlay) authOverlay.classList.add('hidden');
+            if (appMainContent) appMainContent.classList.remove('hidden');
+            const appHeader = document.getElementById('appHeader');
+            if (appHeader) appHeader.classList.remove('hidden');
+            if (headerActions) {
+                headerActions.classList.remove('hidden');
+                headerActions.classList.add('flex');
             }
 
-            systemUsers.forEach(u => {
-                const li = document.createElement('li');
-                li.className = 'p-3 bg-white flex items-center justify-between hover:bg-stone-50 transition-colors';
-                const isMe = currentUser && u.uid === currentUser.uid;
-                const displayName = u.email ? u.email.split('@')[0] : 'Användare';
-                const statusBadge = u.role === 'admin'
-                    ? `<span class="px-2 py-0.5 bg-purple-100 text-purple-800 text-[10px] font-bold rounded-full">Admin</span>`
-                    : u.status === 'approved'
-                    ? `<span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-bold rounded-full">Godkänd</span>`
-                    : `<span class="px-2 py-0.5 bg-amber-100 text-amber-900 text-[10px] font-bold rounded-full">Väntar</span>`;
+            if (submitBtn) submitBtn.disabled = false;
 
-                const actionBtns = isMe ? `<span class="text-[11px] text-stone-400 italic">(Du)</span>` : `
-                    <div class="flex items-center gap-1.5">
-                        ${u.status !== 'approved' ? `
-                            <button type="button" onclick="setUserStatus('${u.id}', 'approved')" class="bg-emerald-700 hover:bg-emerald-800 text-white text-[11px] font-semibold px-2.5 py-1 rounded-lg transition-all cursor-pointer">
-                                Godkänn
-                            </button>
-                        ` : `
-                            <button type="button" onclick="setUserStatus('${u.id}', 'pending')" class="bg-stone-100 hover:bg-stone-200 text-stone-700 text-[11px] font-semibold px-2 py-1 rounded-lg transition-all cursor-pointer">
-                                Återkalla
-                            </button>
-                        `}
-                        <button type="button" onclick="deleteUserRequest('${u.id}')" title="Ta bort" class="text-stone-300 hover:text-rose-600 p-1 rounded-lg cursor-pointer">
-                            <i class="fa-solid fa-trash-can text-xs"></i>
-                        </button>
-                    </div>
-                `;
+            setupSharedCategoriesListener();
+            setupSharedItemsListener();
 
-                li.innerHTML = `
-                    <div class="flex items-center gap-2">
-                        <span class="font-medium text-stone-800 text-xs">${escapeHtml(displayName)}</span>
-                        ${statusBadge}
-                    </div>
-                    ${actionBtns}
-                `;
-                userMgmtList.appendChild(li);
-            });
+            if (googleWebhookUrl) {
+                fetchFromGoogleSheetsSilently();
+            }
         }
-
-        window.setUserStatus = async function(userDocId, newStatus) {
-            try {
-                const uRef = doc(db, ...publicDataPath, 'users', userDocId);
-                await updateDoc(uRef, { status: newStatus });
-            } catch (err) {}
-        };
-
-        window.deleteUserRequest = async function(userDocId) {
-            try {
-                const uRef = doc(db, ...publicDataPath, 'users', userDocId);
-                await deleteDoc(uRef);
-            } catch (err) {}
-        };
 
         function updateCategoryDropdowns() {
             if (!itemTypeInput || !editItemTypeInput || !filterType) return;
@@ -1238,7 +985,7 @@
         if (itemForm) {
             itemForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
-                if (!currentUser || currentUserStatus !== 'approved') return;
+                if (!currentUser) return;
 
                 const name = itemNameInput.value.trim();
                 const cost = Math.round(parseFloat(itemCostInput.value)) || 0;
@@ -1251,6 +998,7 @@
                 submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Sparar...`;
 
                 try {
+                    const rawCreatorName = (currentUser.email || '').split('@')[0];
                     const itemData = {
                         id: Date.now().toString(),
                         name: name,
@@ -1260,7 +1008,7 @@
                         completed: false,
                         timestamp: Date.now(),
                         createdDate: new Date().toLocaleDateString('sv-SE', { month: 'short', day: 'numeric', year: 'numeric' }),
-                        createdBy: currentUser.email || currentUser.uid
+                        createdBy: rawCreatorName
                     };
 
                     items.unshift(itemData);
