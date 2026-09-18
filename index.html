@@ -1058,7 +1058,15 @@
                         } catch (sheetErr) {}
                     }
 
+                    // Keep current selected category if active, otherwise reset name/cost/link
+                    const currentSelectedCategory = itemTypeInput.value;
                     itemForm.reset();
+                    itemNameInput.value = '';
+                    itemCostInput.value = '';
+                    itemLinkInput.value = '';
+                    if (currentSelectedCategory) {
+                        itemTypeInput.value = currentSelectedCategory;
+                    }
                     itemNameInput.focus();
                 } catch (err) {} finally {
                     submitBtn.disabled = false;
@@ -1387,7 +1395,13 @@
                         const handleCardClick = (e) => {
                             e.preventDefault();
                             if (filterType) {
-                                filterType.value = isSelected ? 'ALL' : catName;
+                                const newFilter = isSelected ? 'ALL' : catName;
+                                filterType.value = newFilter;
+                                
+                                if (itemTypeInput) {
+                                    itemTypeInput.value = newFilter === 'ALL' ? '' : newFilter;
+                                }
+                                
                                 render();
                             }
                         };
@@ -1515,7 +1529,12 @@
 
         if (searchInput) searchInput.addEventListener('input', render);
         if (filterStatus) filterStatus.addEventListener('change', render);
-        if (filterType) filterType.addEventListener('change', render);
+        if (filterType) filterType.addEventListener('change', () => {
+            if (filterType.value !== 'ALL' && itemTypeInput) {
+                itemTypeInput.value = filterType.value;
+            }
+            render();
+        });
         if (sortBy) sortBy.addEventListener('change', render);
     </script>
 </body>
