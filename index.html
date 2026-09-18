@@ -60,7 +60,7 @@
 
             <div id="authErrorAlert" class="hidden p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs flex items-center gap-2">
                 <i class="fa-solid fa-circle-exclamation text-rose-600 shrink-0"></i>
-                <span id="authErrorText">Ett fel uppstod vid inloggningen.</span>
+                <span id="authErrorText">Inloggningen misslyckades. Kontrollera användarnamn och lösenord.</span>
             </div>
 
             <form id="emailAuthForm" class="space-y-4">
@@ -115,10 +115,10 @@
                 </div>
 
                 <div>
-                    <label for="itemCost" class="block text-xs font-semibold text-stone-600 mb-1">Kostnad (kr)</label>
+                    <label for="itemCost" class="block text-xs font-semibold text-stone-600 mb-1">Kostnad (kr) <span class="text-stone-400 font-normal">(Valfri)</span></label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-stone-400 text-xs font-semibold">kr</span>
-                        <input type="number" id="itemCost" required step="1" min="0" placeholder="0" data-lpignore="true" autocomplete="off"
+                        <input type="number" id="itemCost" step="1" min="0" placeholder="0" data-lpignore="true" autocomplete="off"
                             class="w-full pl-8 pr-2.5 py-2.5 text-sm bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-800/20 focus:border-amber-800 transition-all">
                     </div>
                 </div>
@@ -337,6 +337,23 @@
         </div>
     </div>
 
+    <!-- Delete Confirmation Modal for Items -->
+    <div id="confirmDeleteItemModal" class="hidden fixed inset-0 z-50 bg-stone-900/40 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-xl w-full max-w-sm p-5 border border-stone-200 text-center space-y-4">
+            <div class="w-12 h-12 bg-rose-50 text-rose-600 rounded-full flex items-center justify-center mx-auto text-xl">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <div>
+                <h4 class="font-bold text-stone-900">Ta bort post?</h4>
+                <p id="confirmDeleteItemText" class="text-xs text-stone-500 mt-1">Är du säker på att du vill ta bort den här posten?</p>
+            </div>
+            <div class="flex items-center gap-2 pt-2">
+                <button id="cancelDeleteItemBtn" type="button" class="w-1/2 py-2 px-3 text-xs font-semibold text-stone-600 bg-stone-100 hover:bg-stone-200 rounded-xl transition-all cursor-pointer">Avbryt</button>
+                <button id="executeDeleteItemBtn" type="button" class="w-1/2 py-2 px-3 text-xs font-semibold text-white bg-rose-600 hover:bg-rose-700 rounded-xl shadow-sm transition-all cursor-pointer">Ta bort</button>
+            </div>
+        </div>
+    </div>
+
     <div id="confirmDeleteModal" class="hidden fixed inset-0 z-50 bg-stone-900/40 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-xl w-full max-w-sm p-5 border border-stone-200 text-center space-y-4">
             <div class="w-12 h-12 bg-rose-50 text-rose-600 rounded-full flex items-center justify-center mx-auto text-xl">
@@ -374,10 +391,10 @@
                 </div>
 
                 <div>
-                    <label for="editItemCost" class="block text-xs font-semibold text-stone-600 mb-1">Kostnad (kr)</label>
+                    <label for="editItemCost" class="block text-xs font-semibold text-stone-600 mb-1">Kostnad (kr) <span class="text-stone-400 font-normal">(Valfri)</span></label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-stone-400 text-xs font-semibold">kr</span>
-                        <input type="number" id="editItemCost" required step="1" min="0" data-lpignore="true" autocomplete="off"
+                        <input type="number" id="editItemCost" step="1" min="0" data-lpignore="true" autocomplete="off"
                             class="w-full pl-8 pr-2.5 py-2.5 text-sm bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-800/20 focus:border-amber-800 transition-all">
                     </div>
                 </div>
@@ -475,7 +492,6 @@
         const authUsernameInput = document.getElementById('authUsername');
         const authPasswordInput = document.getElementById('authPassword');
         const authSubmitBtn = document.getElementById('authSubmitBtn');
-        const authSubmitText = document.getElementById('authSubmitText');
 
         const appMainContent = document.getElementById('appMainContent');
         const cloudAlert = document.getElementById('cloudAlert');
@@ -528,6 +544,11 @@
         const cancelCatEditBtn = document.getElementById('cancelCatEditBtn');
         const categoryList = document.getElementById('categoryList');
 
+        const confirmDeleteItemModal = document.getElementById('confirmDeleteItemModal');
+        const confirmDeleteItemText = document.getElementById('confirmDeleteItemText');
+        const cancelDeleteItemBtn = document.getElementById('cancelDeleteItemBtn');
+        const executeDeleteItemBtn = document.getElementById('executeDeleteItemBtn');
+
         const confirmDeleteModal = document.getElementById('confirmDeleteModal');
         const confirmDeleteText = document.getElementById('confirmDeleteText');
         const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
@@ -541,6 +562,7 @@
         let unsubscribeItems = null;
         let unsubscribeCategories = null;
         let pendingDeleteCategoryId = null;
+        let pendingDeleteItemId = null;
         
         let googleWebhookUrl = 'https://script.google.com/macros/s/AKfycbzSPgY2-qHidL9H-xrrOkCZZUNT7qsfmU_x9TyPCm3h7SkI9Cy8HO3_Nfo1LLCr4B4O/exec' || localStorage.getItem('googleWebhookUrl') || 'https://script.google.com/macros/s/AKfycbzSPgY2-qHidL9H-xrrOkCZZUNT7qsfmU_x9TyPCm3h7SkI9Cy8HO3_Nfo1LLCr4B4O/exec';
 
@@ -588,7 +610,7 @@
                             ...item,
                             name: String(item.name ?? ''),
                             type: String(item.type ?? ''),
-                            cost: item.cost !== undefined ? Number(item.cost) : (item.actualCost !== undefined ? Number(item.actualCost) : Number(item.expectedCost || 0)),
+                            cost: (item.cost !== undefined && item.cost !== '') ? Number(item.cost) : ((item.actualCost !== undefined && item.actualCost !== '') ? Number(item.actualCost) : (item.expectedCost !== undefined && item.expectedCost !== '' ? Number(item.expectedCost) : 0)),
                             completed: Boolean(item.completed || false)
                         }));
                         localStorage.setItem(STORAGE_ITEMS_KEY, JSON.stringify(items));
@@ -723,7 +745,7 @@
                                 ...item,
                                 name: String(item.name ?? ''),
                                 type: String(item.type ?? ''),
-                                cost: item.cost !== undefined ? Number(item.cost) : (item.actualCost !== undefined ? Number(item.actualCost) : Number(item.expectedCost || 0)),
+                                cost: (item.cost !== undefined && item.cost !== '') ? Number(item.cost) : ((item.actualCost !== undefined && item.actualCost !== '') ? Number(item.actualCost) : (item.expectedCost !== undefined && item.expectedCost !== '' ? Number(item.expectedCost) : 0)),
                                 completed: Boolean(item.completed || false)
                             }));
                             localStorage.setItem(STORAGE_ITEMS_KEY, JSON.stringify(items));
@@ -761,7 +783,7 @@
                 }
                 let csvContent = "data:text/csv;charset=utf-8,ID,Namn,Kostnad (SEK),Kategori,Länk,Klar,Skapad Datum\n";
                 items.forEach(item => {
-                    const costVal = item.cost !== undefined ? item.cost : 0;
+                    const costVal = (item.cost !== undefined && item.cost !== '') ? item.cost : 0;
                     const row = [
                         `"${item.id || ''}"`,
                         `"${(item.name || '').replace(/"/g, '""')}"`,
@@ -958,7 +980,7 @@
                         ...rawData,
                         name: String(rawData.name ?? ''),
                         type: String(rawData.type ?? ''),
-                        cost: rawData.cost !== undefined ? Number(rawData.cost) : (rawData.actualCost !== undefined ? Number(rawData.actualCost) : Number(rawData.expectedCost || 0)),
+                        cost: (rawData.cost !== undefined && rawData.cost !== '') ? Number(rawData.cost) : ((rawData.actualCost !== undefined && rawData.actualCost !== '') ? Number(rawData.actualCost) : (rawData.expectedCost !== undefined && rawData.expectedCost !== '' ? Number(rawData.expectedCost) : 0)),
                         completed: Boolean(rawData.completed || false)
                     });
                 });
@@ -973,7 +995,7 @@
                             ...i,
                             name: String(i.name ?? ''),
                             type: String(i.type ?? ''),
-                            cost: i.cost !== undefined ? Number(i.cost) : (i.actualCost !== undefined ? Number(i.actualCost) : Number(i.expectedCost || 0)),
+                            cost: (i.cost !== undefined && i.cost !== '') ? Number(i.cost) : ((i.actualCost !== undefined && i.actualCost !== '') ? Number(i.actualCost) : (i.expectedCost !== undefined && i.expectedCost !== '' ? Number(i.expectedCost) : 0)),
                             completed: Boolean(i.completed || false)
                         }));
                     } catch (e) { items = []; }
@@ -988,7 +1010,8 @@
                 if (!currentUser) return;
 
                 const name = itemNameInput.value.trim();
-                const cost = Math.round(parseFloat(itemCostInput.value)) || 0;
+                const costValRaw = itemCostInput.value.trim();
+                const cost = costValRaw !== '' ? Math.round(parseFloat(costValRaw)) || 0 : 0;
                 const type = itemTypeInput.value;
                 const link = itemLinkInput.value.trim();
 
@@ -1002,7 +1025,7 @@
                     const itemData = {
                         id: Date.now().toString(),
                         name: name,
-                        cost: cost,
+                        cost: costValRaw !== '' ? cost : '',
                         type: type,
                         link: link || null,
                         completed: false,
@@ -1067,33 +1090,54 @@
             }
         };
 
-        window.deleteItem = async function(id) {
-            if (!currentUser) return;
-            try {
-                const localIndex = items.findIndex(i => i.id === id);
-                if (localIndex !== -1) {
-                    items.splice(localIndex, 1);
-                    localStorage.setItem(STORAGE_ITEMS_KEY, JSON.stringify(items));
-                    render();
-                }
-
-                if (!googleWebhookUrl) {
-                    try {
-                        const itemRef = doc(db, ...publicDataPath, 'items', id);
-                        await deleteDoc(itemRef);
-                    } catch (fsErr) {}
-                } else {
-                    try {
-                        fetch(googleWebhookUrl, {
-                            method: 'POST',
-                            mode: 'no-cors',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ target: 'item', action: 'delete', id: id })
-                        });
-                    } catch (sheetErr) {}
-                }
-            } catch (err) {}
+        window.deleteItem = function(id) {
+            const item = items.find(i => i.id === id);
+            if (!item) return;
+            pendingDeleteItemId = id;
+            if (confirmDeleteItemText) confirmDeleteItemText.textContent = `Är du säker på att du vill ta bort "${item.name}"?`;
+            if (confirmDeleteItemModal) confirmDeleteItemModal.classList.remove('hidden');
         };
+
+        if (cancelDeleteItemBtn && confirmDeleteItemModal) {
+            cancelDeleteItemBtn.addEventListener('click', () => {
+                pendingDeleteItemId = null;
+                confirmDeleteItemModal.classList.add('hidden');
+            });
+        }
+
+        if (executeDeleteItemBtn && confirmDeleteItemModal) {
+            executeDeleteItemBtn.addEventListener('click', async () => {
+                if (!pendingDeleteItemId || !currentUser) return;
+                const id = pendingDeleteItemId;
+                try {
+                    const localIndex = items.findIndex(i => i.id === id);
+                    if (localIndex !== -1) {
+                        items.splice(localIndex, 1);
+                        localStorage.setItem(STORAGE_ITEMS_KEY, JSON.stringify(items));
+                        render();
+                    }
+
+                    if (!googleWebhookUrl) {
+                        try {
+                            const itemRef = doc(db, ...publicDataPath, 'items', id);
+                            await deleteDoc(itemRef);
+                        } catch (fsErr) {}
+                    } else {
+                        try {
+                            fetch(googleWebhookUrl, {
+                                method: 'POST',
+                                mode: 'no-cors',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ target: 'item', action: 'delete', id: id })
+                            });
+                        } catch (sheetErr) {}
+                    }
+                } catch (err) {} finally {
+                    pendingDeleteItemId = null;
+                    confirmDeleteItemModal.classList.add('hidden');
+                }
+            });
+        }
 
         if (editItemForm) {
             editItemForm.addEventListener('submit', async (e) => {
@@ -1102,7 +1146,8 @@
 
                 const id = editItemIdInput.value;
                 const name = editItemNameInput.value.trim();
-                const cost = Math.round(parseFloat(editItemCostInput.value)) || 0;
+                const costValRaw = editItemCostInput.value.trim();
+                const cost = costValRaw !== '' ? Math.round(parseFloat(costValRaw)) || 0 : 0;
                 const type = editItemTypeInput.value;
                 const link = editItemLinkInput.value.trim();
 
@@ -1113,8 +1158,9 @@
 
                 try {
                     const idx = items.findIndex(i => i.id === id);
+                    const finalCost = costValRaw !== '' ? cost : '';
                     if (idx !== -1) {
-                        items[idx] = { ...items[idx], name, cost, type, link: link || null };
+                        items[idx] = { ...items[idx], name, cost: finalCost, type, link: link || null };
                         localStorage.setItem(STORAGE_ITEMS_KEY, JSON.stringify(items));
                         render();
                     }
@@ -1122,7 +1168,7 @@
                     if (!googleWebhookUrl) {
                         try {
                             const itemRef = doc(db, ...publicDataPath, 'items', id);
-                            await updateDoc(itemRef, { name, cost, type, link: link || null });
+                            await updateDoc(itemRef, { name, cost: finalCost, type, link: link || null });
                         } catch (fsErr) {}
                     }
 
@@ -1263,7 +1309,7 @@
 
             editItemIdInput.value = item.id;
             editItemNameInput.value = String(item.name ?? '');
-            editItemCostInput.value = item.cost !== undefined ? item.cost : 0;
+            editItemCostInput.value = (item.cost !== undefined && item.cost !== '') ? item.cost : '';
             editItemTypeInput.value = String(item.type ?? '');
             editItemLinkInput.value = String(item.link ?? '');
 
@@ -1278,12 +1324,13 @@
         }
 
         function formatCurrency(amount) {
+            if (amount === undefined || amount === '' || isNaN(amount)) return '—';
             return new Intl.NumberFormat('sv-SE', { style: 'currency', currency: 'SEK', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(amount);
         }
 
         function updateStats(filteredItems) {
-            const activeCost = filteredItems.filter(item => !item.completed).reduce((sum, item) => sum + (item.cost !== undefined ? item.cost : 0), 0);
-            const completedCost = filteredItems.filter(item => item.completed).reduce((sum, item) => sum + (item.cost !== undefined ? item.cost : 0), 0);
+            const activeCost = filteredItems.filter(item => !item.completed).reduce((sum, item) => sum + ((item.cost !== undefined && item.cost !== '') ? Number(item.cost) : 0), 0);
+            const completedCost = filteredItems.filter(item => item.completed).reduce((sum, item) => sum + ((item.cost !== undefined && item.cost !== '') ? Number(item.cost) : 0), 0);
 
             const totalCount = filteredItems.length;
 
@@ -1301,7 +1348,7 @@
                 if (!categoryStats[catName]) {
                     categoryStats[catName] = { cost: 0, count: 0, color: 'stone' };
                 }
-                const costVal = item.cost !== undefined ? item.cost : 0;
+                const costVal = (item.cost !== undefined && item.cost !== '') ? Number(item.cost) : 0;
                 categoryStats[catName].cost += costVal;
                 categoryStats[catName].count += 1;
             });
@@ -1377,8 +1424,8 @@
             });
 
             filtered.sort((a, b) => {
-                const aCost = a.cost !== undefined ? a.cost : 0;
-                const bCost = b.cost !== undefined ? b.cost : 0;
+                const aCost = (a.cost !== undefined && a.cost !== '') ? Number(a.cost) : 0;
+                const bCost = (b.cost !== undefined && b.cost !== '') ? Number(b.cost) : 0;
 
                 if (sortMode === 'actual-desc') return bCost - aCost;
                 if (sortMode === 'actual-asc') return aCost - bCost;
@@ -1402,7 +1449,7 @@
                     const colorKey = matchedCat ? matchedCat.color : 'stone';
                     const badgeClass = colorStyles[colorKey] || colorStyles['stone'];
 
-                    const costVal = item.cost !== undefined ? item.cost : 0;
+                    const costVal = (item.cost !== undefined && item.cost !== '') ? item.cost : '';
                     const linkCell = item.link 
                         ? `<a href="${escapeHtml(item.link)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-xs text-amber-900 hover:text-amber-950 font-medium hover:underline"><i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Länk</a>`
                         : `<span class="text-stone-300 text-xs">—</span>`;
