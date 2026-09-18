@@ -564,7 +564,7 @@
         let pendingDeleteCategoryId = null;
         let pendingDeleteItemId = null;
         
-        let googleWebhookUrl = 'https://script.google.com/macros/s/AKfycbzSPgY2-qHidL9H-xrrOkCZZUNT7qsfmU_x9TyPCm3h7SkI9Cy8HO3_Nfo1LLCr4B4O/exec' || localStorage.getItem('googleWebhookUrl') || 'https://script.google.com/macros/s/AKfycbzSPgY2-qHidL9H-xrrOkCZZUNT7qsfmU_x9TyPCm3h7SkI9Cy8HO3_Nfo1LLCr4B4O/exec';
+        let googleWebhookUrl = 'https://script.google.com/macros/s/AKfycbyxzOB2sEvZlh1YhoiwnSnHNseaaayQ9eG4SYLkNbOtoLGvHZTIc-24dJJYE3VFTYVo/exec' || localStorage.getItem('googleWebhookUrl') || 'https://script.google.com/macros/s/AKfycbyxzOB2sEvZlh1YhoiwnSnHNseaaayQ9eG4SYLkNbOtoLGvHZTIc-24dJJYE3VFTYVo/exec';
 
         const localUserSession = localStorage.getItem('godsvagen_local_user');
         if (localUserSession) {
@@ -783,7 +783,7 @@
                 }
                 let csvContent = "data:text/csv;charset=utf-8,ID,Namn,Kostnad (SEK),Kategori,Länk,Klar,Skapad Datum\n";
                 items.forEach(item => {
-                    const costVal = (item.cost !== undefined && item.cost !== '') ? item.cost : 0;
+                    const costVal = (item.cost !== undefined && item.cost !== '') ? item.cost : '';
                     const row = [
                         `"${item.id || ''}"`,
                         `"${(item.name || '').replace(/"/g, '""')}"`,
@@ -1011,7 +1011,11 @@
 
                 const name = itemNameInput.value.trim();
                 const costValRaw = itemCostInput.value.trim();
-                const cost = costValRaw !== '' ? Math.round(parseFloat(costValRaw)) || 0 : '';
+                let cost = '';
+                if (costValRaw !== '') {
+                    const parsed = parseFloat(costValRaw);
+                    cost = !isNaN(parsed) ? Math.round(parsed) : '';
+                }
                 const type = itemTypeInput.value;
                 const link = itemLinkInput.value.trim();
 
@@ -1147,7 +1151,11 @@
                 const id = editItemIdInput.value;
                 const name = editItemNameInput.value.trim();
                 const costValRaw = editItemCostInput.value.trim();
-                const cost = costValRaw !== '' ? Math.round(parseFloat(costValRaw)) || 0 : '';
+                let cost = '';
+                if (costValRaw !== '') {
+                    const parsed = parseFloat(costValRaw);
+                    cost = !isNaN(parsed) ? Math.round(parsed) : '';
+                }
                 const type = editItemTypeInput.value;
                 const link = editItemLinkInput.value.trim();
 
