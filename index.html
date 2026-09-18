@@ -18,12 +18,12 @@
 </head>
 <body class="bg-stone-100 text-stone-800 min-h-screen pb-12">
 
-    <header class="bg-white border-b border-stone-200 shadow-sm">
+    <header id="appHeader" class="hidden bg-white border-b border-stone-200 shadow-sm">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col sm:flex-row items-center justify-between gap-3">
         <div class="flex items-center space-x-3 w-full sm:w-auto justify-between sm:justify-start">
             <div class="flex items-center space-x-3">
                 <div class="w-11 h-11 rounded-2xl overflow-hidden shadow-md flex items-center justify-center border border-amber-950/20 bg-stone-100 shrink-0">
-                    <img src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?q=80&w=300&auto=format&fit=crop" onerror="this.src='https://placehold.co/100x100/e7e5e4/44403c?text=Hus'" alt="Huset" class="w-full h-full object-cover">
+                    <img src="/images/house.png" onerror="this.src='https://placehold.co/100x100/e7e5e4/44403c?text=Hus'" alt="Huset" class="w-full h-full object-cover">
                 </div>
                 <div>
                     <h1 class="text-xl font-bold text-stone-900 tracking-tight">Godsvägen</h1>
@@ -32,10 +32,6 @@
         </div>
 
         <div id="headerActions" class="hidden flex-wrap items-center gap-2 w-full sm:w-auto justify-end">
-                <div id="userProfileBadge" class="hidden items-center gap-2 px-3 py-1.5 bg-stone-100 border border-stone-200 rounded-xl text-xs font-semibold text-stone-700">
-                    <i class="fa-solid fa-user-circle text-amber-800 text-sm"></i>
-                    <span id="userEmailDisplay">användare</span>
-                </div>
                 <button id="openUserMgmtBtn" class="hidden bg-amber-50 hover:bg-amber-100 text-amber-900 text-xs font-semibold py-2 px-3 rounded-xl border border-amber-200 transition-all items-center gap-1.5 cursor-pointer">
                     <i class="fa-solid fa-users-gear text-amber-800"></i> Användare <span id="pendingCountBadge" class="hidden bg-amber-700 text-white text-[10px] px-1.5 py-0.5 rounded-full font-bold">0</span>
                 </button>
@@ -59,7 +55,7 @@
     <div class="bg-white rounded-3xl shadow-xl border border-stone-200/80 p-6 sm:p-8 space-y-6">
         <div class="text-center space-y-2">
             <div class="w-20 h-20 rounded-2xl overflow-hidden mx-auto shadow-inner border border-amber-100 bg-stone-100 flex items-center justify-center">
-                <img src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?q=80&w=300&auto=format&fit=crop" onerror="this.src='https://placehold.co/150x150/e7e5e4/44403c?text=Hus'" alt="Huset" class="w-full h-full object-cover">
+                <img src="/images/house.png" onerror="this.src='https://placehold.co/150x150/e7e5e4/44403c?text=Hus'" alt="Huset" class="w-full h-full object-cover">
             </div>
             <h2 class="text-2xl font-bold text-stone-900">Välkommen till Godsvägen</h2>
         </div>
@@ -76,10 +72,10 @@
 
             <form id="emailAuthForm" class="space-y-4">
                 <div>
-                    <label for="authEmail" class="block text-xs font-semibold text-stone-600 mb-1">E-postadress</label>
+                    <label for="authEmail" class="block text-xs font-semibold text-stone-600 mb-1">Användarnamn</label>
                     <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-stone-400 text-xs"><i class="fa-solid fa-envelope"></i></span>
-                        <input type="email" id="authEmail" required placeholder="namn@exempel.se" data-lpignore="true" autocomplete="email"
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-stone-400 text-xs"><i class="fa-solid fa-user"></i></span>
+                        <input type="text" id="authEmail" required placeholder="Användarnamn" data-lpignore="true" autocomplete="username"
                             class="w-full pl-9 pr-3.5 py-2.5 text-sm bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-800/20 focus:border-amber-800 transition-all">
                     </div>
                 </div>
@@ -141,7 +137,7 @@
         </div>
     </div>
 
-    <main id="appMainContent" class="hidden max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 space-y-6">
+    <main id="appMainContent" class="hidden max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 space-y-6">
 
         <div id="cloudAlert" class="hidden p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-sm flex items-center justify-between">
             <div class="flex items-center gap-2">
@@ -258,7 +254,7 @@
                         class="w-full sm:w-auto px-3 py-2 text-sm bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-800/20 focus:border-amber-800 transition-all text-stone-700">
                         <option value="active" selected>Ej klara</option>
                         <option value="all">Alla</option>
-                        <option value="completed">Endast klara</option>
+                        <option value="completed">Klara</option>
                     </select>
 
                     <select id="filterType" data-lpignore="true" autocomplete="off"
@@ -487,16 +483,14 @@
         } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'godsvagen-list-tracker';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' 
-            ? JSON.parse(__firebase_config) 
-            : {
-                apiKey: "demo-api-key",
-                authDomain: "demo-app.firebaseapp.com",
-                projectId: "demo-app",
-                storageBucket: "demo-app.appspot.com",
-                messagingSenderId: "123456789",
-                appId: "1:123456789:web:demo"
-            };
+        const firebaseConfig = {
+            apiKey: "AIzaSyCeRDvxj4UPVT2XhyZJGe3FV9FQ5SPXzxg",
+            authDomain: "godsvagen.firebaseapp.com",
+            projectId: "godsvagen",
+            storageBucket: "godsvagen.firebasestorage.app",
+            messagingSenderId: "520429155586",
+            appId: "1:520429155586:web:682ed159413d3025ccbe1b"
+        };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
@@ -510,6 +504,12 @@
         const STORAGE_CATS_KEY = 'godsvagen_local_cats_' + appId;
         const publicDataPath = ['artifacts', appId, 'public', 'data'];
 
+        function getEmailFromUsername(username) {
+            const clean = username.trim().toLowerCase();
+            if (clean.includes('@')) return clean;
+            return clean + '@godsvagen.local';
+        }
+
         const colorStyles = {
             emerald: 'bg-emerald-50 text-emerald-800 border-emerald-200',
             amber: 'bg-amber-50 text-amber-900 border-amber-200',
@@ -521,8 +521,6 @@
         };
 
         const headerActions = document.getElementById('headerActions');
-        const userProfileBadge = document.getElementById('userProfileBadge');
-        const userEmailDisplay = document.getElementById('userEmailDisplay');
         const openUserMgmtBtn = document.getElementById('openUserMgmtBtn');
         const pendingCountBadge = document.getElementById('pendingCountBadge');
         const exportCsvBtn = document.getElementById('exportCsvBtn');
@@ -619,7 +617,7 @@
         let pendingDeleteCategoryId = null;
         let isRegisterMode = false;
         
-        let googleWebhookUrl = '' || localStorage.getItem('googleWebhookUrl') || '';
+        let googleWebhookUrl = 'https://script.google.com/macros/s/AKfycbzSPgY2-qHidL9H-xrrOkCZZUNT7qsfmU_x9TyPCm3h7SkI9Cy8HO3_Nfo1LLCr4B4O/exec' || localStorage.getItem('googleWebhookUrl') || 'https://script.google.com/macros/s/AKfycbzSPgY2-qHidL9H-xrrOkCZZUNT7qsfmU_x9TyPCm3h7SkI9Cy8HO3_Nfo1LLCr4B4O/exec';
 
         const localUserSession = localStorage.getItem('godsvagen_local_user');
         if (localUserSession) {
@@ -672,71 +670,47 @@
                             completed: Boolean(item.completed || false)
                         }));
                         localStorage.setItem(STORAGE_ITEMS_KEY, JSON.stringify(items));
+                        render();
                     }
-                    render();
                 }
             } catch (err) {}
         }
 
+        const usersRef = collection(db, publicDataPath[0], publicDataPath[1], publicDataPath[2], publicDataPath[3], 'users');
+
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 currentUser = user;
-                localStorage.setItem('godsvagen_local_user', JSON.stringify({ uid: user.uid, email: user.email }));
-                if (userEmailDisplay) userEmailDisplay.textContent = user.email || 'användare';
+                localStorage.setItem('godsvagen_local_user', JSON.stringify(currentUser));
                 
                 if (unsubscribeUsers) unsubscribeUsers();
-                if (unsubscribeItems) unsubscribeItems();
-                if (unsubscribeCategories) unsubscribeCategories();
-
-                const usersRef = collection(db, ...publicDataPath, 'users');
+                
                 unsubscribeUsers = onSnapshot(usersRef, async (snapshot) => {
                     systemUsers = [];
                     let myUserDoc = null;
-
-                    snapshot.forEach((docSnap) => {
-                        const userData = { id: docSnap.id, ...docSnap.data() };
-                        systemUsers.push(userData);
-                        if (userData.uid === user.uid || (userData.email && userData.email.toLowerCase() === user.email.toLowerCase())) {
-                            myUserDoc = userData;
+                    snapshot.forEach(docSnap => {
+                        const d = { id: docSnap.id, ...docSnap.data() };
+                        systemUsers.push(d);
+                        if (d.uid === user.uid || (d.email && d.email.toLowerCase() === (user.email || '').toLowerCase())) {
+                            myUserDoc = d;
                         }
                     });
 
                     const isDesignatedAdmin = (user.email || '').toLowerCase() === DESIGNATED_ADMIN_EMAIL.toLowerCase();
 
-                    if (isDesignatedAdmin) {
-                        currentUserRole = 'admin';
-                        currentUserStatus = 'approved';
-
-                        if (!myUserDoc) {
-                            try {
-                                const adminDocRef = doc(usersRef);
-                                await setDoc(adminDocRef, {
-                                    uid: user.uid,
-                                    email: user.email,
-                                    role: 'admin',
-                                    status: 'approved',
-                                    timestamp: Date.now()
-                                });
-                            } catch (e) {}
-                        } else if (myUserDoc.role !== 'admin' || myUserDoc.status !== 'approved') {
-                            try {
-                                const uRef = doc(db, ...publicDataPath, 'users', myUserDoc.id);
-                                await updateDoc(uRef, { role: 'admin', status: 'approved' });
-                            } catch (e) {}
-                        }
-                    } else if (myUserDoc) {
-                        currentUserRole = myUserDoc.role || 'user';
-                        currentUserStatus = myUserDoc.status || 'pending';
+                    if (myUserDoc) {
+                        currentUserRole = isDesignatedAdmin ? 'admin' : (myUserDoc.role || 'user');
+                        currentUserStatus = isDesignatedAdmin ? 'approved' : (myUserDoc.status || 'pending');
                     } else {
-                        currentUserRole = 'user';
-                        currentUserStatus = 'pending';
+                        currentUserRole = isDesignatedAdmin ? 'admin' : 'user';
+                        currentUserStatus = isDesignatedAdmin ? 'approved' : 'pending';
                         try {
-                            const newUserDocRef = doc(usersRef);
-                            await setDoc(newUserDocRef, {
+                            const newDocRef = doc(usersRef);
+                            await setDoc(newDocRef, {
                                 uid: user.uid,
                                 email: user.email,
-                                role: 'user',
-                                status: 'pending',
+                                role: currentUserRole,
+                                status: currentUserStatus,
                                 timestamp: Date.now()
                             });
                         } catch (e) {}
@@ -746,7 +720,7 @@
                 }, (error) => {
                     const isDesignatedAdmin = (user.email || '').toLowerCase() === DESIGNATED_ADMIN_EMAIL.toLowerCase();
                     currentUserRole = isDesignatedAdmin ? 'admin' : 'user';
-                    currentUserStatus = 'approved';
+                    currentUserStatus = isDesignatedAdmin ? 'approved' : 'pending';
                     updateUIForUserStatus();
                 });
             } else if (!localUserSession) {
@@ -766,6 +740,8 @@
             if (authOverlay) authOverlay.classList.remove('hidden');
             if (pendingOverlay) pendingOverlay.classList.add('hidden');
             if (appMainContent) appMainContent.classList.add('hidden');
+            const appHeader = document.getElementById('appHeader');
+            if (appHeader) appHeader.classList.add('hidden');
             if (headerActions) headerActions.classList.add('hidden');
         }
 
@@ -796,7 +772,7 @@
                 isRegisterMode = true;
                 tabRegister.className = "w-1/2 py-2 text-xs font-bold text-amber-900 border-b-2 border-amber-800 transition-all cursor-pointer";
                 tabLogin.className = "w-1/2 py-2 text-xs font-bold text-stone-400 hover:text-stone-600 border-b-2 border-transparent transition-all cursor-pointer";
-                if (authSubmitText) authSubmitText.textContent = "Skapa konto";
+                if (authSubmitText) authSubmitText.textContent = "Skapa";
                 if (authErrorAlert) authErrorAlert.classList.add('hidden');
             });
         }
@@ -804,10 +780,12 @@
         if (emailAuthForm) {
             emailAuthForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
-                const email = authEmailInput.value.trim();
+                const usernameInputVal = authEmailInput.value.trim();
                 const password = authPasswordInput.value;
 
-                if (!email || !password) return;
+                if (!usernameInputVal || !password) return;
+
+                const email = getEmailFromUsername(usernameInputVal);
 
                 authSubmitBtn.disabled = true;
                 authSubmitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Behandlar...`;
@@ -815,21 +793,29 @@
 
                 try {
                     if (isRegisterMode) {
-                        await createUserWithEmailAndPassword(auth, email, password);
+                        try {
+                            await createUserWithEmailAndPassword(auth, email, password);
+                            showNotification('Konto skapat! Väntar på att godkännas av administratör.');
+                        } catch (regErr) {
+                            if (authErrorText) authErrorText.textContent = "Kunde inte skapa konto. Användarnamnet kanske redan finns eller lösenordet är för kort (minst 6 tecken).";
+                            if (authErrorAlert) authErrorAlert.classList.remove('hidden');
+                            return;
+                        }
                     } else {
-                        await signInWithEmailAndPassword(auth, email, password);
+                        try {
+                            await signInWithEmailAndPassword(auth, email, password);
+                        } catch (loginErr) {
+                            if (authErrorText) authErrorText.textContent = "Inloggningen misslyckades. Kontrollera användarnamn och lösenord, eller skapa ett konto om du saknar ett.";
+                            if (authErrorAlert) authErrorAlert.classList.remove('hidden');
+                            return;
+                        }
                     }
                 } catch (err) {
-                    const isDesignatedAdmin = email.toLowerCase() === DESIGNATED_ADMIN_EMAIL.toLowerCase();
-                    currentUser = { uid: 'user_' + btoa(email).replace(/=/g, ''), email: email };
-                    currentUserRole = isDesignatedAdmin ? 'admin' : 'user';
-                    currentUserStatus = 'approved';
-                    localStorage.setItem('godsvagen_local_user', JSON.stringify(currentUser));
-                    if (userEmailDisplay) userEmailDisplay.textContent = email;
-                    updateUIForUserStatus();
+                    if (authErrorText) authErrorText.textContent = "Ett fel uppstod.";
+                    if (authErrorAlert) authErrorAlert.classList.remove('hidden');
                 } finally {
                     authSubmitBtn.disabled = false;
-                    authSubmitBtn.innerHTML = `<i class="fa-solid fa-right-to-bracket"></i> <span id="authSubmitText">${isRegisterMode ? 'Skapa konto' : 'Logga in'}</span>`;
+                    authSubmitBtn.innerHTML = `<i class="fa-solid fa-right-to-bracket"></i> <span id="authSubmitText">${isRegisterMode ? 'Skapa' : 'Logga in'}</span>`;
                 }
             });
         }
@@ -979,15 +965,11 @@
                 if (authOverlay) authOverlay.classList.add('hidden');
                 if (pendingOverlay) pendingOverlay.classList.add('hidden');
                 if (appMainContent) appMainContent.classList.remove('hidden');
+                const appHeader = document.getElementById('appHeader');
+                if (appHeader) appHeader.classList.remove('hidden');
                 if (headerActions) {
                     headerActions.classList.remove('hidden');
                     headerActions.classList.add('flex');
-                }
-                if (userProfileBadge) {
-                    userProfileBadge.classList.add('hidden');
-                }
-                if (userEmailDisplay && currentUser && currentUser.email) {
-                    userEmailDisplay.textContent = currentUser.email;
                 }
 
                 if (currentUserRole === 'admin') {
@@ -1011,7 +993,9 @@
             } else {
                 if (authOverlay) authOverlay.classList.add('hidden');
                 if (pendingOverlay) pendingOverlay.classList.remove('hidden');
-                if (pendingUserEmail && currentUser) pendingUserEmail.textContent = currentUser.email || 'din e-post';
+                const appHeader = document.getElementById('appHeader');
+                if (appHeader) appHeader.classList.add('hidden');
+                if (pendingUserEmail && currentUser) pendingUserEmail.textContent = currentUser.email ? currentUser.email.split('@')[0] : 'användarnamn';
                 if (appMainContent) appMainContent.classList.add('hidden');
                 if (headerActions) headerActions.classList.add('hidden');
             }
@@ -1020,19 +1004,9 @@
         function renderUserMgmtList() {
             if (!userMgmtList) return;
             userMgmtList.innerHTML = '';
-            const pendingUsers = systemUsers.filter(u => u.status === 'pending');
-
-            if (pendingCountBadge) {
-                if (pendingUsers.length > 0) {
-                    pendingCountBadge.textContent = pendingUsers.length;
-                    pendingCountBadge.classList.remove('hidden');
-                } else {
-                    pendingCountBadge.classList.add('hidden');
-                }
-            }
-
+            
             if (systemUsers.length === 0) {
-                userMgmtList.innerHTML = `<li class="p-3 text-center text-stone-400 text-xs">Inga användare hittades</li>`;
+                userMgmtList.innerHTML = '<li class="p-3 text-stone-400 text-xs text-center bg-white">Inga användare registrerade ännu.</li>';
                 return;
             }
 
@@ -1040,6 +1014,7 @@
                 const li = document.createElement('li');
                 li.className = 'p-3 bg-white flex items-center justify-between hover:bg-stone-50 transition-colors';
                 const isMe = currentUser && u.uid === currentUser.uid;
+                const displayName = u.email ? u.email.split('@')[0] : 'Användare';
                 const statusBadge = u.role === 'admin'
                     ? `<span class="px-2 py-0.5 bg-purple-100 text-purple-800 text-[10px] font-bold rounded-full">Admin</span>`
                     : u.status === 'approved'
@@ -1065,7 +1040,7 @@
 
                 li.innerHTML = `
                     <div class="flex items-center gap-2">
-                        <span class="font-medium text-stone-800 text-xs">${escapeHtml(u.email || 'Användare')}</span>
+                        <span class="font-medium text-stone-800 text-xs">${escapeHtml(displayName)}</span>
                         ${statusBadge}
                     </div>
                     ${actionBtns}
