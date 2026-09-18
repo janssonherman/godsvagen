@@ -1615,21 +1615,32 @@
                         const isSelected = filterType && filterType.value === catName;
                         const div = document.createElement('div');
                         div.className = `p-3 rounded-xl bg-slate-50 border transition-all cursor-pointer hover:bg-slate-100 space-y-1.5 ${isSelected ? 'border-indigo-500 ring-2 ring-indigo-500/20 bg-indigo-50/40' : 'border-slate-100'}`;
+                        div.setAttribute('role', 'button');
+                        div.setAttribute('tabindex', '0');
                         div.title = `Klicka för att filtrera på ${catName}`;
-                        div.onclick = () => {
+                        
+                        const handleCardClick = (e) => {
+                            e.preventDefault();
                             if (filterType) {
                                 filterType.value = isSelected ? 'ALL' : catName;
                                 render();
                             }
                         };
+                        div.addEventListener('click', handleCardClick);
+                        div.addEventListener('keydown', (e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                                handleCardClick(e);
+                            }
+                        });
+
                         div.innerHTML = `
-                            <div class="flex items-center justify-between">
+                            <div class="flex items-center justify-between pointer-events-none">
                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-medium border ${badgeClass}">
                                     ${escapeHtml(catName)}
                                 </span>
                                 <span class="text-slate-400 text-[11px] font-semibold">${data.count} st</span>
                             </div>
-                            <div class="flex items-center justify-between pt-1 border-t border-slate-200/60 text-[11px]">
+                            <div class="flex items-center justify-between pt-1 border-t border-slate-200/60 text-[11px] pointer-events-none">
                                 <span class="text-slate-500">Total kostnad:</span>
                                 <span class="font-bold text-slate-900">${formatCurrency(data.cost)}</span>
                             </div>
