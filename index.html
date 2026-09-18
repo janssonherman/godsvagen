@@ -791,12 +791,19 @@
             try {
                 await signOut(auth);
             } catch (err) {
-                // Tvångsrensning om nätverk eller session misslyckas
+                console.warn("SignOut notice:", err);
+            } finally {
                 currentUser = null;
+                currentUserRole = 'user';
+                currentUserStatus = 'pending';
                 if (authOverlay) authOverlay.classList.remove('hidden');
                 if (pendingOverlay) pendingOverlay.classList.add('hidden');
                 if (appMainContent) appMainContent.classList.add('hidden');
                 if (headerActions) headerActions.classList.add('hidden');
+                if (syncBadge) {
+                    syncBadge.className = "inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-100 text-amber-800";
+                    syncBadge.innerHTML = `<i class="fa-solid fa-lock text-[10px]"></i> Ej inloggad`;
+                }
             }
         }
 
