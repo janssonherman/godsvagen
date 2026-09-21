@@ -140,10 +140,14 @@
                         class="w-full px-3.5 py-2.5 text-sm bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-800/20 focus:border-amber-800 transition-all">
                 </div>
 
-                <div class="lg:col-span-4 pt-2">
+                <div class="lg:col-span-4 pt-2 flex flex-col sm:flex-row gap-2">
                     <button type="submit" id="submitBtn"
-                        class="w-full bg-amber-900 hover:bg-amber-950 text-white font-semibold py-3 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 text-sm cursor-pointer">
+                        class="w-full sm:flex-1 bg-amber-900 hover:bg-amber-950 text-white font-semibold py-3 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 text-sm cursor-pointer">
                         Lägg till
+                    </button>
+                    <button type="submit" id="submitAndCompletedBtn"
+                        class="w-full sm:flex-1 bg-emerald-700 hover:bg-emerald-800 text-white font-semibold py-3 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 text-sm cursor-pointer">
+                        <i class="fa-solid fa-check"></i> Lägg till som klar
                     </button>
                 </div>
             </form>
@@ -510,6 +514,7 @@
         const itemTypeInput = document.getElementById('itemType');
         const itemLinkInput = document.getElementById('itemLink');
         const submitBtn = document.getElementById('submitBtn');
+        const submitAndCompletedBtn = document.getElementById('submitAndCompletedBtn');
 
         const editItemForm = document.getElementById('editItemForm');
         const editItemIdInput = document.getElementById('editItemId');
@@ -1009,6 +1014,9 @@
                 e.preventDefault();
                 if (!currentUser) return;
 
+                // Determine if this submission was triggered by "Lägg till som klar"
+                const isCompletedSubmission = e.submitter === submitAndCompletedBtn;
+
                 const name = itemNameInput.value.trim();
                 const costValRaw = itemCostInput.value.trim();
                 let cost = '';
@@ -1021,8 +1029,10 @@
 
                 if (!name || !type) return;
 
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Sparar...`;
+                const activeSubmitBtn = isCompletedSubmission ? submitAndCompletedBtn : submitBtn;
+                const originalHtml = activeSubmitBtn.innerHTML;
+                activeSubmitBtn.disabled = true;
+                activeSubmitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Sparar...`;
 
                 try {
                     const rawCreatorName = currentUser.displayName || currentUser.email || '';
@@ -1032,7 +1042,7 @@
                         cost: cost,
                         type: type,
                         link: link || null,
-                        completed: false,
+                        completed: isCompletedSubmission,
                         timestamp: Date.now(),
                         createdDate: new Date().toLocaleDateString('sv-SE', { month: 'short', day: 'numeric', year: 'numeric' }),
                         createdBy: rawCreatorName
@@ -1058,7 +1068,6 @@
                         } catch (sheetErr) {}
                     }
 
-                    // Keep current selected category if active, otherwise reset name/cost/link
                     const currentSelectedCategory = itemTypeInput.value;
                     itemForm.reset();
                     itemNameInput.value = '';
@@ -1069,8 +1078,8 @@
                     }
                     itemNameInput.focus();
                 } catch (err) {} finally {
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = "Lägg till";
+                    activeSubmitBtn.disabled = false;
+                    activeSubmitBtn.innerHTML = originalHtml;
                 }
             });
         }
@@ -1375,20 +1384,23 @@
 
             const categoryStats = {};
             categories.forEach(cat => {
-                categoryStats[cat.name] = { activeCost: 0, count: 0, color: cat.color };
+                categoryStats[cat.name] = { activeCost: 0, completedCost: 0, activeCount: 0, completedCount: 0, color: cat.color };
             });
 
-            // Calculate category stats from items not done only for each category summary
+            // Calculate category stats
             items.forEach(item => {
                 const catName = item.type || 'Allmänt';
                 if (!categoryStats[catName]) {
-                    categoryStats[catName] = { activeCost: 0, count: 0, color: 'stone' };
+                    categoryStats[catName] = { activeCost: 0, completedCost: 0, activeCount: 0, completedCount: 0, color: 'stone' };
                 }
                 const costVal = (item.cost !== undefined && item.cost !== '' && !isNaN(item.cost)) ? Number(item.cost) : 0;
                 if (!item.completed) {
                     categoryStats[catName].activeCost += costVal;
+                    categoryStats[catName].activeCount += 1;
+                } else {
+                    categoryStats[catName].completedCost += costVal;
+                    categoryStats[catName].completedCount += 1;
                 }
-                categoryStats[catName].count += 1;
             });
 
             if (categorySummaryList) {
@@ -1437,11 +1449,13 @@
                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-medium border ${badgeClass}">
                                     ${escapeHtml(catName)}
                                 </span>
-                                <span class="text-stone-400 text-[11px] font-semibold">${data.count} st</span>
+                                <span class="text-stone-500 text-[11px]">Klara: <strong class="text-emerald-700">${data.completedCount}</strong> | Kvar: <strong class="text-amber-800">${data.activeCount}</strong></span>
                             </div>
                             <div class="flex items-center justify-between pt-1 border-t border-stone-200/60 text-[11px] pointer-events-none">
-                                <span class="text-stone-500">Ej klara kostnad:</span>
-                                <span class="font-bold text-stone-900">${formatCurrency(data.activeCost)}</span>
+                                <span class="text-stone-500">Klara kostnad / Kvar:</span>
+                                <div>
+                                    <span class="font-bold text-emerald-700">${formatCurrency(data.completedCost)}</span> / <span class="font-bold text-amber-800">${formatCurrency(data.activeCost)}</span>
+                                </div>
                             </div>
                         `;
                         categorySummaryList.appendChild(div);
